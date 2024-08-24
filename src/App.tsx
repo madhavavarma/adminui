@@ -1,5 +1,6 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import Routing from "./Routing";
+import Layout from "./basecomponents/Layout";
 
 
 function App() {
@@ -9,7 +10,9 @@ function App() {
   return (
     <>
     <ThemeProvider theme={theme}>
-      <Routing />
+      <Layout>
+        <Routing />
+      </Layout>
     </ThemeProvider>
     </>
   )

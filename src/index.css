@@ -1,8 +1,44 @@
 @tailwind base;
+
+
+
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+
+
+    --topbar-height: 100px;
+
+    --primary-color: #ff6c2f;
+
+    --main-nav-width: 280px;
+    --main-nav-width-sm: 75px;
+    --main-nav-bg: #262d34;
+    --main-nav-item-color: #9097a7;
+    --main-nav-item-hover-bg: transparent;
+    --main-nav-item-hover-color: #ffffff;
+    --main-nav-border-color: #2f3944;
+    --main-nav-item-color: #9097a7;
+}
 
 html, body, #app, #app>div {
     height: 100vh
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+::-webkit-scrollbar-thumb {
+    background-color: #38393a;
+    border-radius: 0px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+  }
 

@@ -1,5 +1,5 @@
 import { Header } from "./Header";
-import { MainAlert } from "./MainAlert";
+import { Nav } from "./Nav";
 
 
 export interface IProps {
@@ -7,16 +7,19 @@ export interface IProps {
 }
 
 export const Layout = (props: IProps) => {
+
+  const clsLayoutArticle = "font-HankenG font-bold h-full bg-bg-light dark:bg-bg-dark";
+
   return (
     <>
-     <main className="bg-blue font-HankenG font-bold h-full">
-      <Header />
-      <MainAlert />
+     <article className={clsLayoutArticle}>
+      <Header />      
+      <Nav />
       <section className="z-02">
         {props.children}
       </section>
       {/* <Footer /> */}
-    </main>
+    </article>
     </>
   );
 }

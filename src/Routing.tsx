@@ -7,9 +7,9 @@ import Products from "./components/products";
 export default function Routing() {
     return (
         <Router>
-            <Routes >
+            <Routes>
                 <Route path="/products" element={<Products />} />
-                <Route path="" element={<Login />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </Router>
     )

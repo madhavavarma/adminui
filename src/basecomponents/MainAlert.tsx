@@ -1,11 +1,15 @@
-import { FluidContainer } from "./FluidContainer"
 
-export const MainAlert = () => {
+interface IProps {
+    message: string
+}
+
+export const MainAlert = (props: IProps) => {
+
+    const clsMessage = "font-Play rounded-lg bg-bg-alert dark:bg-bg-alert-dark p-3 mb-8 text-txt-alert dark:text-txt-alert-dark text-sm font-normal w-full";
+
     return <>
         <article>
-            <FluidContainer>
-                <p className="font-Play rounded-lg bg-bg-alert p-3 mb-8 text-txt-alert text-sm font-normal">Add Your Products and Place your Order. </p>
-            </FluidContainer>
-        </article>
+                <p className={clsMessage}>{props.message}</p>
+        </article> 
     </>
 }

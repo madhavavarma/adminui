@@ -6,7 +6,7 @@ interface IProps {
 
 export const FluidContainer = (props : IProps) => {
     return <>
-        <section className="container mx-auto px-6 md:px-16 lg:px-16">
+        <section className="container mx-auto px-4">
             {props.children}
         </section>
     </>

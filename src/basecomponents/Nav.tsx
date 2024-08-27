@@ -8,143 +8,109 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { INav } from "../models/INav";
 import { useState } from "react";
 import { GetIcon } from "../helpers/GetIcons";
+import { NavList } from "../helpers/NavList";
 
 export const Nav = () => {
 
-    const navListData: INav[] = [
-        {name:  "General", children: [
-            {name: "Dashboard", navigateTo: "/dashboard"},
-            {name: "Products", iconName: "ShoppingBag", children: [
-                {name: "List", navigateTo: "/products/list"},
-                {name: "Create", navigateTo: "/products/create"},
-                {name: "Edit", navigateTo: "/products/edit"},
-            ]},
-            {name: "Category", iconName: "Category", children: [
-                {name: "List", navigateTo: "/category/list"},
-                {name: "Create", navigateTo: "/category/create"},
-                {name: "Edit", navigateTo: "/category/edit"},
-            ]},
-            {name: "Orders", iconName: "ShoppingCart", children: [
-                {name: "List", navigateTo: "/category/list"},
-                {name: "Details", navigateTo: "/category/details"},
-                {name: "Edit", navigateTo: "/category/edit"},
-            ]},
-            {name: "Attributes", iconName: "ShoppingCart", children: [
-                {name: "List", navigateTo: "/category/list"},
-                {name: "Details", navigateTo: "/category/details"},
-                {name: "Edit", navigateTo: "/category/edit"},
-            ]},
-            {name: "Tags", iconName: "ShoppingCart", children: [
-                {name: "List", navigateTo: "/category/list"},
-                {name: "Details", navigateTo: "/category/details"},
-                {name: "Edit", navigateTo: "/category/edit"},
-            ]}
+    const clsContainer = "w-72 bg-main-nav-bg h-full";
+    const clsLogoContainer = "px-10 leading-[8]";
+    const clsNavListContainer = "h-199 overflow-hidden";
+    const clsMenuHeader = "uppercase text-main-nav-item-color text-[12px] tracking-wider opacity-60 font-bold h-7 px-6";
+    const clsParentNav = "font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-4 items-center px-8 py-2";
+    const clsParentNavIcon = "font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-2 items-center px-6 py-1";
+    const clsChildNav = "font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-2 items-center px-20 py-1";
 
-        ]},
+    const dispatch = useDispatch();    
+    const initialNavList: INav[] = NavList;   
+    const [navList, setNavList] = useState(initialNavList);
+    const state = useSelector((state: IState) => state.Flags);
 
-        {name:  "Users", children: [
-            {name: "Profile", navigateTo: "/dashboard"},
-            {name: "Roles", iconName: "ShoppingBag", children: [
-                {name: "List", navigateTo: "/products/list"},
-                {name: "Create", navigateTo: "/products/create"},
-                {name: "Edit", navigateTo: "/products/edit"},
-            ]},
-            {name: "Permissions", iconName: "Category", children: [
-                {name: "List", navigateTo: "/category/list"},
-                {name: "Create", navigateTo: "/category/create"},
-                {name: "Edit", navigateTo: "/category/edit"},
-            ]},
-            {name: "Customers", iconName: "ShoppingCart", children: [
-                {name: "List", navigateTo: "/category/list"},
-                {name: "Details", navigateTo: "/category/details"},
-                {name: "Edit", navigateTo: "/category/edit"},
-            ]},
-            {name: "Sellers", iconName: "ShoppingCart", children: [
-                {name: "List", navigateTo: "/category/list"},
-                {name: "Details", navigateTo: "/category/details"},
-                {name: "Edit", navigateTo: "/category/edit"},
-            ]}
+    const setL2Active = (nav: INav) => {
+        var newNavList: INav[] = JSON.parse(JSON.stringify(initialNavList ));
 
-        ]},
+        newNavList.forEach(l1 => {
+            var l2 = l1.children?.find(l2 => l2.id === nav.id);
+            if(l2) {
+                l2.isActive = true;
+                l2.showChildren = true;
 
-        {name:  "Others", children: [
-            {name: "Coupons", navigateTo: "/dashboard"},
-            {name: "Reviews", iconName: "ShoppingBag", children: [
-                {name: "List", navigateTo: "/products/list"},
-                {name: "Create", navigateTo: "/products/create"},
-                {name: "Edit", navigateTo: "/products/edit"},
-            ]}
-        ]},
-    ]
-    
-    const dispatch = useDispatch();
-    const state = useSelector((state: IState) => state.Flags)
-    const [navList, setNavList] = useState(navListData);
-
-    const closeNav = () => () => {
-      dispatch(FlagsActions.setNav(false))
-    };
-
-    const showChildren = (nav: INav) => {
-        var newNavList: INav[] = JSON.parse(JSON.stringify(navList));
-
-        newNavList.forEach(x => {
-            if(x.name === nav.name) {
-                x.showChildren = !x.showChildren;
-            } else {
-                x.showChildren = false;
-                if(x.children) {
-                    x.children.forEach(y => {
-                        if(y.name === nav.name) {
-                            y.showChildren = !y.showChildren;
-                        } else {
-                            y.showChildren = false;
-                        }
-                    })
+                if(l2.children) {
+                    l2.children[0].isActive = true;
                 }
-            }
-        });
+            } 
+        })
 
         setNavList(newNavList);
     }
 
+    const setL3Active = (nav: INav) => {
+        var newNavList: INav[] = JSON.parse(JSON.stringify(initialNavList));
+
+        newNavList.forEach(l1 => {
+            l1.children?.forEach(l2 => {
+                var l3 = l2.children?.find(l3 => l3.id === nav.id);
+                if(l3) {
+                    l3.isActive = true;
+                    l2.isActive = true;
+                    l2.showChildren = true;
+                } 
+            }) 
+        })
+
+        setNavList(newNavList);
+    }
+
+    const closeNav = () => () => {
+      dispatch(FlagsActions.setNav(false))
+    };   
+
     return (
         <Drawer open={state.showNav} onClose={closeNav()} className="w-full" PaperProps={{
-            sx: {
-              backgroundColor: "#262d34",
-            }
-          }} >
-            <section className="w-72 bg-main-nav-bg h-full">
-                <section className="px-10 leading-[8]">
+            sx: {backgroundColor: "#262d34"} }} >
+
+            {/* Container */}
+            <section className={clsContainer}>
+
+                {/* Logo */}
+                <section className={clsLogoContainer}>
                     <a href="#" className="block">
                         <img src={logo} className="inline align-middle"/> 
                     </a>
                 </section>
-                <section className="h-199 overflow-hidden">
+
+                {/* Nav List */}
+                <section className={clsNavListContainer}>
                     {navList.map( (nav: INav) => <ul className="flex flex-col mb-6 font-Play">
-                        <li className="uppercase text-main-nav-item-color text-[12px] tracking-wider opacity-60 font-bold h-7 px-6">
+
+                        {/* Menu Header */}
+                        <li className={clsMenuHeader}>
                            {nav.name}
                         </li>
-                        {nav.children?.map( (navC1: INav) =>  <li  onClick={() => {showChildren(navC1)} }>
-                            <a href="#" className=" flex justify-between align-center">
-                                <span className="font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-4 items-center px-8 py-2">
+
+                        {nav.children?.map( (navC1: INav) =>  
+                        <li  >
+                            <a onClick={() => {setL2Active(navC1)} } href="#" className= {"flex justify-between align-center border-l-4 border-solid border-transparent " + (navC1.isActive ? "border-primary-color" : "")}>
+                                {/* Parent Nav */}
+                                <span className={clsParentNav + (navC1.isActive ? " text-main-nav-item-hover-color" : "")}>
                                     <span className="flex items-center">
-                                        {GetIcon(navC1.iconName || "Dashboard")}
+                                        {GetIcon(navC1.iconName || "Dashboard", navC1.isActive ? "--primary-color" : "")}
                                     </span>
                                     <span>
                                         {navC1.name}
                                     </span>
                                 </span>
-                                <span className="font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-2 items-center px-6 py-1">
+                                <span className={clsParentNavIcon}>
                                     {navC1.children && <span>
                                         {navC1.showChildren ? <ExpandLessIcon /> : <ExpandMoreIcon />} 
                                     </span> }
                                 </span>
                             </a>
                             <ul>
-                                {navC1.showChildren === true && navC1.children?.map( (navC2: INav) =>  <li>
-                                    <a href="#" className=" flex justify-between align-center">
-                                        <span className="font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-2 items-center px-20 py-1">
+                                {/* Child Nav */}
+                                {navC1.showChildren === true && navC1.children?.map( (navC2: INav) =>  
+                                <li>
+                                    <a onClick={() => setL3Active(navC2)} href="#" className="flex justify-between align-center">
+                                        <span className={clsChildNav + (navC2.isActive ? " text-main-nav-item-hover-color" : "")}>
                                             <span>
                                                 {navC2.name}
                                             </span>
@@ -155,8 +121,6 @@ export const Nav = () => {
                         </li> )}
                     </ul>
                     )}
-
-                 
                 </section>
             </section>
         </Drawer>

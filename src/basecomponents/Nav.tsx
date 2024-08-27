@@ -127,8 +127,8 @@ export const Nav = () => {
                         </li>
                         {nav.children?.map( (navC1: INav) =>  <li  onClick={() => {showChildren(navC1)} }>
                             <a href="#" className=" flex justify-between align-center">
-                                <span className="font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-4 items-center px-6 py-1">
-                                    <span className="mb-2">
+                                <span className="font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-4 items-center px-8 py-2">
+                                    <span className="flex items-center">
                                         {GetIcon(navC1.iconName || "Dashboard")}
                                     </span>
                                     <span>

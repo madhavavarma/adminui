@@ -85,8 +85,6 @@ export const Nav = () => {
       dispatch(FlagsActions.setNav(false))
     };
 
-    
-
     const showChildren = (nav: INav) => {
         var newNavList: INav[] = JSON.parse(JSON.stringify(navList));
 

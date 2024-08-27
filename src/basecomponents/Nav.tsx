@@ -6,8 +6,8 @@ import logo from "../assets/react.svg";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { INav } from "../models/INav";
-import { IconComponent } from "./Icon";
 import { useState } from "react";
+import { GetIcon } from "../helpers/GetIcons";
 
 export const Nav = () => {
 
@@ -129,8 +129,7 @@ export const Nav = () => {
                             <a href="#" className=" flex justify-between align-center">
                                 <span className="font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-4 items-center px-6 py-1">
                                     <span className="mb-2">
-                                        {/* <NightsStayTwoToneIcon /> */}
-                                        <IconComponent iconName={navC1.iconName || "Dashboard"} />
+                                        {GetIcon(navC1.iconName || "Dashboard")}
                                     </span>
                                     <span>
                                         {navC1.name}

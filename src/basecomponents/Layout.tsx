@@ -2,13 +2,9 @@ import { useSelector } from "react-redux";
 import { Header } from "./Header";
 import { Nav } from "./Nav";
 import { IState } from "../store/interfaces/IState";
+import { Outlet } from "react-router-dom";
 
-
-export interface IProps {
-    children: React.ReactNode
-}
-
-export const Layout = (props: IProps) => {
+export const Layout = () => {
 
   const clsLayoutArticle = "font-HankenG font-bold h-full bg-bg-light dark:bg-bg-dark";
 
@@ -21,7 +17,7 @@ export const Layout = (props: IProps) => {
       <Nav />
       {state.Flags.darkMode}
       <section className="z-02">
-        {props.children}
+        <Outlet />
       </section>
       {/* <Footer /> */}
     </article>

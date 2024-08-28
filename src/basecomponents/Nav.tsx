@@ -9,6 +9,7 @@ import { INav } from "../models/INav";
 import { useState } from "react";
 import { GetIcon } from "../helpers/GetIcons";
 import { NavList } from "../helpers/NavList";
+import { useNavigate } from "react-router-dom";
 
 export const Nav = () => {
 
@@ -21,9 +22,14 @@ export const Nav = () => {
     const clsChildNav = "font-Play text-[18px] text-main-nav-item-color hover:text-main-nav-item-hover-color flex gap-2 items-center px-20 py-1";
 
     const dispatch = useDispatch();    
+    const navigate = useNavigate();
     const initialNavList: INav[] = NavList;   
     const [navList, setNavList] = useState(initialNavList);
     const state = useSelector((state: IState) => state.Flags);
+
+    const navigateTo = (nav: INav) => {
+        navigate(nav.navigateTo || "");
+    }
 
     const setL2Active = (nav: INav) => {
         var newNavList: INav[] = JSON.parse(JSON.stringify(initialNavList ));
@@ -41,6 +47,8 @@ export const Nav = () => {
         })
 
         setNavList(newNavList);
+
+        navigateTo(nav);
     }
 
     const setL3Active = (nav: INav) => {
@@ -89,7 +97,7 @@ export const Nav = () => {
 
                         {nav.children?.map( (navC1: INav) =>  
                         <li  >
-                            <a onClick={() => {setL2Active(navC1)} } href="#" className= {"flex justify-between align-center border-l-4 border-solid border-transparent " + (navC1.isActive ? "border-primary-color" : "")}>
+                            <a onClick={() => {setL2Active(navC1)} } type="button" className= {"flex justify-between align-center cursor-pointer border-l-4 border-solid border-transparent " + (navC1.isActive ? "border-primary-color" : "")}>
                                 {/* Parent Nav */}
                                 <span className={clsParentNav + (navC1.isActive ? " text-main-nav-item-hover-color" : "")}>
                                     <span className="flex items-center">
@@ -109,7 +117,7 @@ export const Nav = () => {
                                 {/* Child Nav */}
                                 {navC1.showChildren === true && navC1.children?.map( (navC2: INav) =>  
                                 <li>
-                                    <a onClick={() => setL3Active(navC2)} href="#" className="flex justify-between align-center">
+                                    <a onClick={() => setL3Active(navC2)} type="button" className="flex justify-between align-center cursor-pointer">
                                         <span className={clsChildNav + (navC2.isActive ? " text-main-nav-item-hover-color" : "")}>
                                             <span>
                                                 {navC2.name}

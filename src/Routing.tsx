@@ -1,15 +1,17 @@
 import { Route, HashRouter as Router, Routes } from "react-router-dom";
-import Login from "./components/login";
-import Products from "./components/products";
+import Layout from "./basecomponents/Layout";
+import { Dashboard } from "./components/dashboard/Dashboard";
+import { FluidContainer } from "./basecomponents/FluidContainer";
 
 
 
 export default function Routing() {
     return (
-        <Router>
+        <Router basename="">
             <Routes>
-                <Route path="/products" element={<Products />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Layout />}> 
+                    <Route path="/dashboard" element={ <FluidContainer><Dashboard /></FluidContainer>}></Route>
+                </Route>
             </Routes>
         </Router>
     )

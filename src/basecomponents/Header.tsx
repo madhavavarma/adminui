@@ -5,7 +5,6 @@ import { IState } from "../store/interfaces/IState";
 import EditNotificationsTwoToneIcon from '@mui/icons-material/EditNotificationsTwoTone';
 import NightsStayTwoToneIcon from '@mui/icons-material/NightsStayTwoTone';
 import DehazeIcon from '@mui/icons-material/Dehaze';
-import { Button } from "@mui/material";
 import { FlagsActions } from "../store/Flags";
 
 export const Header = () => {
@@ -30,9 +29,9 @@ export const Header = () => {
             <FluidContainer>
                 <section className={clsHeaderSection}>
                     <section className="flex gap-4 items-center">
-                        <Button type="button" onClick={() => openNav()} color="inherit">
+                        <a type="button" onClick={() => openNav()} color="inherit">
                             <DehazeIcon color="inherit"/>
-                        </Button>
+                        </a>
                         <h3 className={clsPageMessage}>WELCOME!</h3>
                     </section>
                     <section className={clsIconsSection}>

@@ -16,15 +16,19 @@ export const Header = () => {
     const clsUserImage = "!w-10 rounded-full";
 
     const dispatch = useDispatch();
-    const showHeader = useSelector((state: IState) => state.Flags.showHeader );
+    const state = useSelector((state: IState) => state.Flags );
 
     const openNav = () => {
         dispatch(FlagsActions.setNav(true));
     }
+
+    const darkMode = () => {
+        dispatch(FlagsActions.setDarkMode(!state.darkMode));
+    }
     
 
     return <>
-    {showHeader &&
+    {state.showHeader &&
         <article className={clsHeaderArticle}>
             <FluidContainer>
                 <section className={clsHeaderSection}>
@@ -35,7 +39,9 @@ export const Header = () => {
                         <h3 className={clsPageMessage}>WELCOME!</h3>
                     </section>
                     <section className={clsIconsSection}>
-                        <NightsStayTwoToneIcon />
+                        <a type="button" onClick={() => darkMode()} color="inherit">
+                            <NightsStayTwoToneIcon />
+                        </a>
                         <EditNotificationsTwoToneIcon />
 
                         <img alt="Login User Image" src={userImage} className={clsUserImage}/>

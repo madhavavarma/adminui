@@ -7,12 +7,17 @@
 
 
 :root {
-
-
-    --topbar-height: 100px;
-
+    --topbar-height: 100px;   
     --primary-color: #ff6c2f;
+    --background-color-light: #f9f7f7;
+    --background-color-dark: #22282e;
+    --background-color-error-light: #ffe2d5;
+    --background-color-error-dark: rgba(255, 108, 47, 0.15);
 
+    --text-color-gray: #707793;
+    --text-color-alert: #662b13;
+    --text-color-alert-dark: #ffa782;
+    
     --main-nav-width: 280px;
     --main-nav-width-sm: 75px;
     --main-nav-bg: #262d34;

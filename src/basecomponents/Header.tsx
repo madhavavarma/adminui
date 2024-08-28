@@ -10,8 +10,8 @@ import { FlagsActions } from "../store/Flags";
 export const Header = () => {
 
     const clsHeaderArticle = "sticky top-0 w-full z-50";
-    const clsHeaderSection = "flex justify-between items-center h-32 text-txt-color-1";
-    const clsPageMessage = "text-txt-color-1 text-lg";
+    const clsHeaderSection = "flex justify-between items-center h-32 text-text-color-gray";
+    const clsPageMessage = "text-text-color-gray text-lg";
     const clsIconsSection = "flex items-center gap-6";
     const clsUserImage = "!w-10 rounded-full";
 

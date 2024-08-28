@@ -11,16 +11,16 @@ export default {
         'Play': ['Play', '"Hanken Grotesk"'],
       },
       colors: {
-        'primary-color': 'var(--primary-color)',
-        'bg-light': "#f9f7f7",
-        'bg-dark': "#22282e",
-        'txt-color-1': "#707793",
-        'bg-alert': "#ffe2d5",
-        'bg-alert-dark': "rgba(255, 108, 47, 0.15)",
-        'txt-alert': "#662b13",
-        'txt-alert-dark': "#ffa782",
-
         'topbar-height': 'var(--topbar-height)',
+        'primary-color': 'var(--primary-color)',        
+        'bg-light': 'var(--background-color-light)',
+        'bg-dark': 'var(--background-color-dark)',
+        'bg-alert': 'var(--background-color-error-light)',
+        'bg-alert-dark': 'var(--background-color-error-light)',
+        
+        'text-color-gray': 'var(--text-color-gray)',         
+        'txt-alert': 'var(--text-color-alert)',
+        'txt-alert-dark': 'var(--text-color-alert-dark)', 
 
         'main-nav-width': 'var(--main-nav-width)',
         'main-nav-width-sm': 'var(--main-nav-width-sm)',

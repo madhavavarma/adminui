@@ -41,7 +41,8 @@ export default {
         'card-shadow': 'var(--card-shadow)',
         'card-bordercol': 'var(--card-bordercol)',
 
-        'text-header-color': 'var(--text-header-color)'
+        'text-header-color': 'var(--text-header-color)',
+        'btn-icon-color-dull': 'var(--btn-icon-color-dull)',
       }
     },
   },

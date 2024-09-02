@@ -1,7 +1,8 @@
-import { Box, Button, Collapse, IconButton, Pagination, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
+import { Box, Button, Collapse, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
 import React from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { GetIcon } from "../../helpers/GetIcons";
 
 export const ProductList = () => {
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
@@ -11,19 +12,13 @@ export const ProductList = () => {
 
     function createData(
         name: string,
-        calories: number,
-        fat: number,
-        carbs: number,
-        protein: number,
         price: number,
+        published: boolean,
       ) {
         return {
           name,
-          calories,
-          fat,
-          carbs,
-          protein,
           price,
+          published,
           history: [
             {
               date: '2020-01-05',
@@ -58,10 +53,31 @@ export const ProductList = () => {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell >{row.price}</TableCell>
+              <TableCell >
+                <Switch defaultChecked={row.published} />
+             </TableCell>
+             <TableCell >
+                <section className="flex items-center gap-2">
+                    <span className="bg-btn-icon-color-dull rounded">
+                        <IconButton aria-label="Example">
+                            {GetIcon("dashboard", "")}
+                        </IconButton>
+                    </span>
+                    <span className="bg-btn-icon-color-dull rounded">
+                        <IconButton aria-label="Example">
+                            {GetIcon("dashboard", "")}
+                        </IconButton>
+                    </span>
+                    <span className="bg-btn-icon-color-dull rounded">
+                        <IconButton aria-label="Example">
+                            {GetIcon("dashboard", "")}
+                        </IconButton>
+                    </span>
+                </section>                
+             </TableCell>
+
+             
             </TableRow>
             <TableRow>
               <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -75,8 +91,8 @@ export const ProductList = () => {
                         <TableRow>
                           <TableCell>Date</TableCell>
                           <TableCell>Customer</TableCell>
-                          <TableCell align="right">Amount</TableCell>
-                          <TableCell align="right">Total price ($)</TableCell>
+                          <TableCell >Amount</TableCell>
+                          <TableCell >Total price ($)</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -86,8 +102,8 @@ export const ProductList = () => {
                               {historyRow.date}
                             </TableCell>
                             <TableCell>{historyRow.customerId}</TableCell>
-                            <TableCell align="right">{historyRow.amount}</TableCell>
-                            <TableCell align="right">
+                            <TableCell >{historyRow.amount}</TableCell>
+                            <TableCell >
                               {Math.round(historyRow.amount * row.price * 100) / 100}
                             </TableCell>
                           </TableRow>
@@ -102,11 +118,11 @@ export const ProductList = () => {
         );
       }
       const rows = [
-        createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-        createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-        createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-        createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-        createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
+        createData('Tomato', 30, true),
+        createData('Brocoli', 25, true),
+        createData('Carrot', 40, true),
+        createData('Spinach', 10, false),
+        createData('Bottle Gourd', 20, true),
       ];
 
     return <>
@@ -120,12 +136,16 @@ export const ProductList = () => {
                     <Table aria-label="collapsible table">
                         <TableHead>
                         <TableRow>
-                            <TableCell />
-                            <TableCell>Dessert (100g serving)</TableCell>
-                            <TableCell align="right">Calories</TableCell>
-                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                            <TableCell><IconButton
+                  aria-label="expand row"
+                  size="small"
+                >
+                  <KeyboardArrowDownIcon />
+                </IconButton></TableCell>
+                            <TableCell>Product</TableCell>
+                            <TableCell>Price</TableCell>
+                            <TableCell>Published</TableCell>
+                            <TableCell>Action</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>

@@ -65,3 +65,66 @@ export const NavList : INav[] = [
         ]}
     ]},
 ];
+
+export const setLvl2Active = (initialNavList: INav[], nav: INav) => {
+    var newNavList: INav[] = JSON.parse(JSON.stringify(initialNavList));
+
+    newNavList.forEach(l1 => {
+        var l2 = l1.children?.find(l2 => l2.id === nav.id);
+        if(l2) {
+            l2.isActive = true;
+            l2.showChildren = true;
+
+            if(l2.children) {
+                l2.children[0].isActive = true;
+            }
+        } 
+    })
+
+    return newNavList;
+
+}
+
+export const setLvl3Active = (initialNavList: INav[], nav: INav) => {
+    var newNavList: INav[] = JSON.parse(JSON.stringify(initialNavList));
+
+    newNavList.forEach(l1 => {
+        l1.children?.forEach(l2 => {
+            var l3 = l2.children?.find(l3 => l3.id === nav.id);
+            if(l3) {
+                l3.isActive = true;
+                l2.isActive = true;
+                l2.showChildren = true;
+            } 
+        }) 
+    })
+
+    return newNavList;
+}
+
+export const getNav = (id: number, navList: INav[]) => {
+
+    var selectedNav = null;
+    var level = "";
+
+    navList.forEach(l1Nav => {
+        var selectedNav = l1Nav.children?.find(l2Nav => l2Nav.id === id);
+        
+        if(selectedNav) {
+            selectedNav = selectedNav;
+            level = "2";
+            return;
+        }
+        
+
+        l1Nav.children?.forEach(l2Nav => {
+            if(l2Nav.id === id) {
+                selectedNav = l2Nav;
+                level = "3";
+            }
+        })
+    });
+
+    
+    return {selectedNav, level};
+}

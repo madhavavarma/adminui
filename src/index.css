@@ -26,6 +26,26 @@
     --main-nav-item-hover-color: #ffffff;
     --main-nav-border-color: #2f3944;
     --main-nav-item-color: #9097a7;
+
+    --dbcard-bgcolor: #fff;
+    --dbcard-bgfooter: rgba(238, 242, 247, 0.8);
+    --dbcard-bgicon: rgba(255, 108, 47, 0.25);
+    --dbcard-colicon: rgba(255, 108, 47, 1);
+    --dbcard-hwicon: 3.5rem;
+    --dbcard-colname: #5d7186;
+    --dbcard-coldata: #313b5e;
+    --dbcard-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.06);
+
+    --card-bg: #fff;
+    --card-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.06);
+    --card-title-py: 0.75rem;
+    --card-px: 1.5rem;
+    --card-py: 1.5rem;
+    --card-bordercol: #eaedf1;
+    --card-borderrad:  0.75rem;
+
+    --text-header-color: #313b5e;
+
 }
 
 html, body, #app, #app>div {

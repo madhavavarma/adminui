@@ -7,7 +7,17 @@ import { Provider } from "react-redux";
 
 function App() {
 
-  const theme = createTheme({});
+  const theme = createTheme({
+    typography: {
+      fontFamily: 'Play',
+      fontSize: 12
+    },
+    palette: {
+      primary: {
+        main: 'rgb(255, 108, 47)'
+      }
+    }
+  });
   const [darkMode] = useState("");
 
   const clsMain = `${darkMode} h-full`

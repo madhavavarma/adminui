@@ -1,4 +1,4 @@
-import { Box, Button, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Collapse, IconButton, Pagination, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
 import React from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -6,7 +6,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 export const ProductList = () => {
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
     const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
-    const clsChild = " py-6 font-Play font-medium overflow-scroll";
+    const clsChild = "font-Play font-medium overflow-scroll";
 
 
     function createData(
@@ -134,6 +134,15 @@ export const ProductList = () => {
                         ))}
                         </TableBody>
                     </Table>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={10}
+                        page={1}
+                        onPageChange={() => {}}
+                        // onRowsPerPageChange={handleChangeRowsPerPage}
+        />
                 {/* </TableContainer> */}
             </section>
         </article>

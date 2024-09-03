@@ -14,5 +14,9 @@ export  class  NavigateTo  {
     static ProductsCreate = (navigate: NavigateFunction) => {
         navigate("/products/create")
     }
+
+    static ProductsEdit = (navigate: NavigateFunction, id: number) => {
+        navigate("/products/edit/" +id)
+    }
     
 }

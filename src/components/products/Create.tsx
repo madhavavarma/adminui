@@ -8,13 +8,17 @@ import { NotificationsActions } from "../../store/Notifications";
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "../../services/Navigate";
 
+interface IProps {
+    product?: IProduct,
+    isEdit?: boolean
+  }
 
-export const ProductCreate = () => {
+export const ProductCreate = (props: IProps) => {
 
     const dispatch = useDispatch();
     var navigate = useNavigate();
 
-    const [product] = useState<IProduct>();
+    const [product, setProduct] = useState<IProduct>();
 
     const [name, setName] = useState(product?.name);
     const [image, setImage] = useState(product?.image);
@@ -26,8 +30,23 @@ export const ProductCreate = () => {
     const [discount, setDiscount] = useState(product?.discount);
     const [tax, setTax] = useState(product?.tax);
 
+    const [show, setShow] = useState(false);
+
     useEffect(() => {
-        dispatch(NotificationsActions.setHeaderMessage("CREATE PRODUCT"));
+        dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT PRODUCT" : "CREATE PRODUCT"));
+
+        if(props.product) {
+            setProduct(props.product);
+            setName(props.product.name);
+            setImage(props.product.image);
+            setDescription(props.product.description);
+            setDiscount(props.product.discount);
+            setTax(props.product.tax);
+            setIsPublished(props.product.isPublished);
+            setPrice(props.product.price);            
+        }
+
+        setShow(true);
     }, []);
 
     const create = () => {
@@ -43,13 +62,16 @@ export const ProductCreate = () => {
         }
 
         console.log(product);
+
+        NavigateTo.Products(navigate);
     }
 
     return <>
-        <article>
-            <MainAlert message="Fields marked with (*) are mandatory" />
+        {show && <article>
+             <MainAlert message="Fields marked with (*) are mandatory" />
             <Card card= { {cardHeader: "Product Information"}}>
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    {name}
                     <TextField id="name" required label="Product Name" variant="outlined" size="small" value={name} onChange={(e: any) => setName(e.target.value)}/>
                     <TextField id="image" required label="Product Image (url)" variant="outlined" size="small" value={image} onChange={(e: any) => setImage(e.target.value)}/>
                     <TextField multiline id="description" label="Description" variant="outlined" size="small" value={description} onChange={(e: any) => setDescription(e.target.value)}/>
@@ -69,9 +91,9 @@ export const ProductCreate = () => {
             <Card card= { {cardHeader: ""}}>
                 <section className="grid grid-cols-2 gap-8 rounded-lg">
                     <Button variant="outlined" onClick={() => NavigateTo.Products(navigate)}>Cancel</Button>
-                    <Button variant="contained" className="" onClick={() => create()}>Create</Button>
+                    <Button variant="contained" className="" onClick={() => create()}>{props.isEdit ? "Update" : "Create" }</Button>
                 </section>
             </Card>
-        </article>
+        </article>}
     </>
 }

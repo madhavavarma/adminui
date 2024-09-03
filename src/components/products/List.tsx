@@ -6,20 +6,24 @@ import { GetIcon } from "../../helpers/GetIcons";
 import { NavigateTo } from "../../services/Navigate";
 import { useNavigate } from "react-router-dom";
 
+
 export const ProductList = () => {
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
     const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
     const clsChild = "font-Play font-medium overflow-scroll";
 
+   
     var navigate = useNavigate();
 
 
     function createData(
+        id: number,
         name: string,
         price: number,
         published: boolean,
       ) {
         return {
+          id,
           name,
           price,
           published,
@@ -63,7 +67,7 @@ export const ProductList = () => {
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsEdit(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("dashboard", "")}
                         </IconButton>
@@ -122,11 +126,11 @@ export const ProductList = () => {
         );
       }
       const rows = [
-        createData('Tomato', 30, true),
-        createData('Brocoli', 25, true),
-        createData('Carrot', 40, true),
-        createData('Spinach', 10, false),
-        createData('Bottle Gourd', 20, true),
+        createData(1, 'Tomato', 30, true),
+        createData(2, 'Brocoli', 25, true),
+        createData(3, 'Carrot', 40, true),
+        createData(4, 'Spinach', 10, false),
+        createData(5,'Bottle Gourd', 20, true),
       ];
 
     return <>

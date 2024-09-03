@@ -1,12 +1,17 @@
 import { Button, FormControlLabel, Switch, TextField } from "@mui/material"
 import { Card } from "../../basecomponents/Card"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IProduct } from "../../models/IProduct";
+import { MainAlert } from "../../basecomponents/MainAlert";
+import { useDispatch } from "react-redux";
+import { NotificationsActions } from "../../store/Notifications";
 
 
 export const ProductCreate = () => {
 
-    const [product, setProduct] = useState<IProduct>();
+    const dispatch = useDispatch();
+
+    const [product] = useState<IProduct>();
 
     const [name, setName] = useState(product?.name);
     const [image, setImage] = useState(product?.image);
@@ -17,6 +22,10 @@ export const ProductCreate = () => {
     const [price, setPrice] = useState(product?.price);
     const [discount, setDiscount] = useState(product?.discount);
     const [tax, setTax] = useState(product?.tax);
+
+    useEffect(() => {
+        dispatch(NotificationsActions.setHeaderMessage("CREATE PRODUCT"));
+    }, []);
 
     const create = () => {
 
@@ -36,6 +45,7 @@ export const ProductCreate = () => {
 
     return <>
         <article>
+            <MainAlert message="Fields marked with (*) are mandatory" />
             <Card card= { {cardHeader: "Product Information"}}>
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
                     <TextField id="name" required label="Product Name" variant="outlined" size="small" value={name} onChange={(e: any) => setName(e.target.value)}/>

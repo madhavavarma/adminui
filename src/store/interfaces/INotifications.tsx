@@ -1,5 +1,6 @@
 export interface INotifications {
-    mainAlert: IMainAlert
+    mainAlert: IMainAlert,
+    headerMessage: string
 }
 
 export interface IMainAlert {

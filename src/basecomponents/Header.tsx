@@ -16,19 +16,19 @@ export const Header = () => {
     const clsUserImage = "!w-10 rounded-full";
 
     const dispatch = useDispatch();
-    const state = useSelector((state: IState) => state.Flags );
+    const state = useSelector((state: IState) => state );
 
     const openNav = () => {
         dispatch(FlagsActions.setNav(true));
     }
 
     const darkMode = () => {
-        dispatch(FlagsActions.setDarkMode(!state.darkMode));
+        dispatch(FlagsActions.setDarkMode(!state.Flags.darkMode));
     }
     
 
     return <>
-    {state.showHeader &&
+    {state.Flags.showHeader &&
         <article className={clsHeaderArticle}>
             <FluidContainer>
                 <section className={clsHeaderSection}>
@@ -36,7 +36,7 @@ export const Header = () => {
                         <a type="button" onClick={() => openNav()} color="inherit">
                             <DehazeIcon color="inherit"/>
                         </a>
-                        <h3 className={clsPageMessage}>WELCOME!</h3>
+                        <h3 className={clsPageMessage}>{state.Notifications.headerMessage || "WELCOME!"}</h3>
                     </section>
                     <section className={clsIconsSection}>
                         <a type="button" onClick={() => darkMode()} color="inherit">

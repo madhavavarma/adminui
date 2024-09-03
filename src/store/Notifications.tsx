@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IMainAlert, INotifications } from "./interfaces/INotifications";
 
 const initialState: INotifications = {
-    mainAlert: { message: "", type: ""}
+    mainAlert: { message: "", type: ""},
+    headerMessage: "Welcome!"
 }
 
 const setMainAlert = (state: INotifications, action: PayloadAction<IMainAlert>) => {
@@ -10,11 +11,17 @@ const setMainAlert = (state: INotifications, action: PayloadAction<IMainAlert>) 
     return state;
 }
 
+const setHeaderMessage = (state: INotifications, action: PayloadAction<string>) => {
+    state.headerMessage = action.payload;
+    return state;
+}
+
 const notificationsSlice = createSlice({
     name: "Notifications",
     initialState: initialState,
     reducers: {
-        setMainAlert
+        setMainAlert,
+        setHeaderMessage
     }
 });
 

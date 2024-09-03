@@ -3,11 +3,15 @@ import React from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { GetIcon } from "../../helpers/GetIcons";
+import { NavigateTo } from "../../services/Navigate";
+import { useNavigate } from "react-router-dom";
 
 export const ProductList = () => {
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
     const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
     const clsChild = "font-Play font-medium overflow-scroll";
+
+    var navigate = useNavigate();
 
 
     function createData(
@@ -129,7 +133,7 @@ export const ProductList = () => {
         <article className={clsContainer}>
             <section className={clsHeader}>
                 <h6> Products List</h6>
-                <Button variant="contained">Add Product</Button>
+                <Button variant="contained" onClick={() => NavigateTo.ProductsCreate(navigate)}>Add Product</Button>
             </section>
             <section className={clsChild}>
                 {/* <TableContainer component={Paper}> */}

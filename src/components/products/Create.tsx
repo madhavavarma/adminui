@@ -5,11 +5,14 @@ import { IProduct } from "../../models/IProduct";
 import { MainAlert } from "../../basecomponents/MainAlert";
 import { useDispatch } from "react-redux";
 import { NotificationsActions } from "../../store/Notifications";
+import { useNavigate } from "react-router-dom";
+import { NavigateTo } from "../../services/Navigate";
 
 
 export const ProductCreate = () => {
 
     const dispatch = useDispatch();
+    var navigate = useNavigate();
 
     const [product] = useState<IProduct>();
 
@@ -42,7 +45,6 @@ export const ProductCreate = () => {
         console.log(product);
     }
 
-
     return <>
         <article>
             <MainAlert message="Fields marked with (*) are mandatory" />
@@ -66,7 +68,7 @@ export const ProductCreate = () => {
             </Card>
             <Card card= { {cardHeader: ""}}>
                 <section className="grid grid-cols-2 gap-8 rounded-lg">
-                    <Button variant="outlined">Cancel</Button>
+                    <Button variant="outlined" onClick={() => NavigateTo.Products(navigate)}>Cancel</Button>
                     <Button variant="contained" className="" onClick={() => create()}>Create</Button>
                 </section>
             </Card>

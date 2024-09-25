@@ -1,30 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import { IProduct } from "../../models/IProduct";
+import { ICategory } from "../../models/ICategory";
+import { CategoryCreate } from "./Create";
 
-// const productData: IProduct = {
-//     name: "Tomato",
-//     description: "Good For Health",
-//     id: 1,
-//     isPublished: true,
-//     price: 30,
-//     image: "https://tomato.img",
-//     discount: 0,
-//     tax: 0
-// }
+const categoryData : ICategory = {
+    name: "Vegetables",
+    id: 1,
+    isPublished: true,
+    image: "",
+    subCategories : [
+        {name: "Leafy", id: 1, isPublished: true},
+        {name: "Root", id: 2, isPublished: true}
+    ]
+}
 
-export const ProductEdit = () => {
 
-    // const [product, setProduct] = useState<IProduct>();
+export const CategoryEdit = () => {
+
+    const [category, setCategory] = useState<ICategory>();
     const { id } = useParams();
 
     useEffect(() => {
         if(id) {
-            // setProduct(productData)
+            setCategory(categoryData)
         }
     }, [])
 
     return <>
-        {/* {product && <ProductCreate product={product} isEdit={true} /> } */}
+        {category && <CategoryCreate Category={category} isEdit={true} /> }
     </>
 }

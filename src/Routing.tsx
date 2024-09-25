@@ -7,6 +7,7 @@ import { ProductList } from "./components/products/List";
 import { ProductEdit } from "./components/products/Edit";
 import { CategoryList } from "./components/categories/List";
 import { CategoryCreate } from "./components/categories/Create";
+import { CategoryEdit } from "./components/categories/Edit";
 
 
 
@@ -25,7 +26,7 @@ export default function Routing() {
 
                     {/* Categoreis */}
                     <Route path="/categories/create" element={ <FluidContainer><CategoryCreate /></FluidContainer>}></Route>
-                    <Route path="/categories/edit/:id" element={ <FluidContainer><CategoryList /></FluidContainer>}></Route>
+                    <Route path="/categories/edit/:id" element={ <FluidContainer><CategoryEdit /></FluidContainer>}></Route>
                     <Route path="/categories/list" element={ <FluidContainer><CategoryList /></FluidContainer>}></Route>
                 </Route>
             </Routes>

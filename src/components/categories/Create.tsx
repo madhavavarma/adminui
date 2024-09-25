@@ -36,7 +36,7 @@ export const CategoryCreate = (props: IProps) => {
         if(props.Category) {
             setCategory(props.Category);
             setName(props.Category.name);
-            setName(props.Category.image);
+            setImage(props.Category.image);
             setIsPublished(props.Category.isPublished);
         }
 

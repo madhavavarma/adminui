@@ -16,20 +16,27 @@ interface IProps {
 
   const categories: ICategory[] = [
     { id: 1, name: 'Electronics', isPublished: true, subCategories: [
-        { id: 11, name: 'Phones', isPublished: true },
-        { id: 12, name: 'Laptops', isPublished: true },
-        { id: 13, name: 'Cameras', isPublished: true },
+        { id: 11, name: 'Phones', isPublished: true, parentCategory: 1, subCategories: [
+            {id: 101, name: "One Plus", isPublished: true, parentCategory: 11}
+        ] },
+        { id: 12, name: 'Laptops', isPublished: true, parentCategory: 1, subCategories: [
+            {id: 101, name: "Lenovo", isPublished: true, parentCategory: 12}
+        ]  },
+        { id: 13, name: 'Cameras', isPublished: true , parentCategory: 1, subCategories: [
+            {id: 101, name: "Sony", isPublished: true, parentCategory: 13}
+        ] },
     ]},
     { id: 2, name: 'Fashion', isPublished: true, subCategories: [
-        { id: 21, name: 'Clothing', isPublished: true },
-        { id: 22, name: 'Shoes', isPublished: true },
-        { id: 23, name: 'Accessories', isPublished: true },
-    ]},
-    { id: 3, name: 'Home', isPublished: true, subCategories: [
-        { id: 31, name: 'Furniture', isPublished: true },
-        { id: 32, name: 'Kitchen', isPublished: true },
-        { id: 33, name: 'Decor', isPublished: true },
-    ]},
+        { id: 21, name: 'Clothing', isPublished: true, parentCategory: 2, subCategories: [
+            {id: 102, name: "Shirts", isPublished: true, parentCategory: 21}
+        ]  },
+        { id: 22, name: 'Shoes', isPublished: true, parentCategory: 2, subCategories: [
+            {id: 102, name: "Casuals", isPublished: true, parentCategory: 22}
+        ]  },
+        { id: 23, name: 'Accessories', isPublished: true, parentCategory: 2, subCategories: [
+            {id: 102, name: "Stand", isPublished: true, parentCategory: 23}
+        ]  },
+    ]}
 ];
 
 
@@ -49,6 +56,7 @@ export const ProductCreate = (props: IProps) => {
     const [show, setShow] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
     const [selectedSubcategory, setSelectedSubcategory] = useState<ICategory | null>(null);
+    const [selectedMinicategory, setSelectedMinicategory] = useState<ICategory | null>(null);
 
     useEffect(() => {
         dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT PRODUCT" : "ADD PRODUCT"));
@@ -95,6 +103,13 @@ export const ProductCreate = (props: IProps) => {
         const subcategoryId = event.target.value as number;
         const subcategory = selectedCategory?.subCategories?.find((sub: ICategory) => sub.id === subcategoryId) || null;
         setSelectedSubcategory(subcategory);
+        setSelectedMinicategory(null);
+    };
+
+    const handleMinicategoryChange = (event: any) => {
+        const minicategoryId = event.target.value as number;
+        const miniCategory = selectedSubcategory?.subCategories?.find((sub: ICategory) => sub.id === minicategoryId) || null;
+        setSelectedMinicategory(miniCategory);
     };
 
     return <>
@@ -102,7 +117,6 @@ export const ProductCreate = (props: IProps) => {
              <MainAlert message="Fields marked with (*) are mandatory" />
             <Card card= { {cardHeader: "Product Information"}}>
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                    {name}
                     <TextField id="name" required label="Product Name" variant="outlined" size="small" value={name} onChange={(e: any) => setName(e.target.value)}/>
                     <TextField id="image" required label="Product Image (url)" variant="outlined" size="small" value={image} onChange={(e: any) => setImage(e.target.value)}/>
                     <TextField multiline id="description" label="Description" variant="outlined" size="small" value={description} onChange={(e: any) => setDescription(e.target.value)}/>
@@ -119,7 +133,7 @@ export const ProductCreate = (props: IProps) => {
                     <TextField multiline id="tax" label="Tax" variant="outlined" size="small" type="number" value={tax} onChange={(e: any) => setTax(e.target.value)}/>
                 </section>
             </Card>
-            <Card card= { {cardHeader: "Category & Sub Category"}}>
+            <Card card= { {cardHeader: "Categories"}}>
                 <section className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-8">
                     <FormControl fullWidth variant="outlined" margin="normal" size="small">
                         <InputLabel>Category</InputLabel>
@@ -160,6 +174,24 @@ export const ProductCreate = (props: IProps) => {
                             {selectedCategory?.subCategories?.map((subcategory) => (
                                 <MenuItem key={subcategory.id} value={subcategory.id} disabled={!subcategory.isPublished}>
                                     {subcategory.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                    <FormControl fullWidth variant="outlined" margin="normal" disabled={!selectedSubcategory}  size="small">
+                        <InputLabel>MiniCategory</InputLabel>
+                        <Select
+                            value={selectedMinicategory?.id || ''}
+                            onChange={handleMinicategoryChange}
+                            label="Minicategory"
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            {selectedSubcategory?.subCategories?.map((minicategory) => (
+                                <MenuItem key={minicategory.id} value={minicategory.id} disabled={!minicategory.isPublished}>
+                                    {minicategory.name}
                                 </MenuItem>
                             ))}
                         </Select>

@@ -61,7 +61,6 @@ export const CategoryCreate = (props: IProps) => {
              <MainAlert message="Fields marked with (*) are mandatory" />
             <Card card= { {cardHeader: "Category Information"}}>
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                    {name}
                     <TextField id="name" required label="Category Name" variant="outlined" size="small" value={name} onChange={(e: any) => setName(e.target.value)}/>
                     <TextField id="image" required label="Category Image (url)" variant="outlined" size="small" value={image} onChange={(e: any) => setImage(e.target.value)}/>
                     <span className="">

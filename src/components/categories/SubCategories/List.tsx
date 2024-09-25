@@ -18,9 +18,22 @@ const SubCategoryList = () => {
     useEffect(() => {
 
       var subCategories: ICategory[] = [
-        {id: 1, name: "Vegetables", isPublished: true, parentCategory: 1},
-        {id: 2, name: "Fruits", isPublished: true, parentCategory: 1},
-        {id: 3, name: "Dairy", isPublished: true, parentCategory: 1},
+        {id: 11, name: "Vegetables", isPublished: true, parentCategory: 1, subCategories: 
+          [
+            {id: 21, name: "Leafy", isPublished:true, parentCategory: 11},
+            {id: 22, name: "Root", isPublished:true, parentCategory: 11}
+          ]
+        },
+        {id: 12, name: "Fruits", isPublished: true, parentCategory: 1, subCategories: 
+        [
+          {id: 23, name: "Leafy", isPublished:true, parentCategory: 12},
+          {id: 24, name: "Root", isPublished:true, parentCategory: 12}
+        ]},
+        {id: 13, name: "Dairy", isPublished: true, parentCategory: 1, subCategories: 
+          [
+            {id: 25, name: "Eggs", isPublished:true, parentCategory: 13},
+            {id: 26, name: "Milk", isPublished:true, parentCategory: 13}
+          ]}
       ]
 
       setSubCategories(subCategories);
@@ -162,7 +175,7 @@ const SubCategoryList = () => {
             </section>
 
             <Drawer open={editSubCategory != null} onClose={() => {setEditSubCategory(null)}} className="w-full" anchor={"right"} PaperProps={{
-            sx: {backgroundColor: "rgb(249, 247, 247)", width: "300px"} }}>
+            sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
                 <Card card= { {cardHeader: "Add Sub Category"}}>
                     
                     <SubCategoryEdit category={subCategories?.find(cat => cat.id === editSubCategory)}/>

@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, Switch, TextField } from "@mui/material"
+import { Button, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField } from "@mui/material"
 import { Card } from "../../basecomponents/Card"
 import { useEffect, useState } from "react";
 import { IProduct } from "../../models/IProduct";
@@ -7,11 +7,31 @@ import { useDispatch } from "react-redux";
 import { NotificationsActions } from "../../store/Notifications";
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "../../services/Navigate";
+import { ICategory } from "../../models/ICategory";
 
 interface IProps {
     product?: IProduct,
     isEdit?: boolean
   }
+
+  const categories: ICategory[] = [
+    { id: 1, name: 'Electronics', isPublished: true, subCategories: [
+        { id: 11, name: 'Phones', isPublished: true },
+        { id: 12, name: 'Laptops', isPublished: true },
+        { id: 13, name: 'Cameras', isPublished: true },
+    ]},
+    { id: 2, name: 'Fashion', isPublished: true, subCategories: [
+        { id: 21, name: 'Clothing', isPublished: true },
+        { id: 22, name: 'Shoes', isPublished: true },
+        { id: 23, name: 'Accessories', isPublished: true },
+    ]},
+    { id: 3, name: 'Home', isPublished: true, subCategories: [
+        { id: 31, name: 'Furniture', isPublished: true },
+        { id: 32, name: 'Kitchen', isPublished: true },
+        { id: 33, name: 'Decor', isPublished: true },
+    ]},
+];
+
 
 export const ProductCreate = (props: IProps) => {
 
@@ -19,21 +39,19 @@ export const ProductCreate = (props: IProps) => {
     var navigate = useNavigate();
 
     const [product, setProduct] = useState<IProduct>();
-
     const [name, setName] = useState(product?.name);
     const [image, setImage] = useState(product?.image);
     const [description, setDescription] = useState(product?.description);
-
     const [isPublished, setIsPublished] = useState(product?.isPublished || false);
-
     const [price, setPrice] = useState(product?.price);
     const [discount, setDiscount] = useState(product?.discount);
     const [tax, setTax] = useState(product?.tax);
-
     const [show, setShow] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
+    const [selectedSubcategory, setSelectedSubcategory] = useState<ICategory | null>(null);
 
     useEffect(() => {
-        dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT PRODUCT" : "CREATE PRODUCT"));
+        dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT PRODUCT" : "ADD PRODUCT"));
 
         if(props.product) {
             setProduct(props.product);
@@ -66,6 +84,19 @@ export const ProductCreate = (props: IProps) => {
         NavigateTo.Products(navigate);
     }
 
+    const handleCategoryChange = (event: any) => {
+        const categoryId = event.target.value as number;
+        const category = categories.find(cat => cat.id === categoryId) || null;
+        setSelectedCategory(category);
+        setSelectedSubcategory(null); // Reset subcategory when category changes
+    };
+
+    const handleSubcategoryChange = (event: any) => {
+        const subcategoryId = event.target.value as number;
+        const subcategory = selectedCategory?.subCategories?.find((sub: ICategory) => sub.id === subcategoryId) || null;
+        setSelectedSubcategory(subcategory);
+    };
+
     return <>
         {show && <article>
              <MainAlert message="Fields marked with (*) are mandatory" />
@@ -86,6 +117,53 @@ export const ProductCreate = (props: IProps) => {
                     <TextField id="price" required label="Price" variant="outlined" size="small" type="number" value={price} onChange={(e: any) => setPrice(e.target.value)}/>
                     <TextField id="discount" label="Discount" variant="outlined" size="small" type="number" value={discount} onChange={(e: any) => setDiscount(e.target.value)}/>
                     <TextField multiline id="tax" label="Tax" variant="outlined" size="small" type="number" value={tax} onChange={(e: any) => setTax(e.target.value)}/>
+                </section>
+            </Card>
+            <Card card= { {cardHeader: "Category & Sub Category"}}>
+                <section className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-8">
+                    <FormControl fullWidth variant="outlined" margin="normal" size="small">
+                        <InputLabel>Category</InputLabel>
+                        <Select 
+                            value={selectedCategory?.id || ''}
+                            onChange={handleCategoryChange}
+                            label="Category"
+                            MenuProps={{
+                                PaperProps: {
+                                    style: {
+                                        maxHeight: 200, // Set a max height for the dropdown
+                                    },
+                                },
+                            }}
+                            style={{ display: 'flex', alignItems: 'center' }} 
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            {categories.map((category) => (
+                                <MenuItem key={category.id} value={category.id} disabled={!category.isPublished}>
+                                    {category.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                    <FormControl fullWidth variant="outlined" margin="normal" disabled={!selectedCategory}  size="small">
+                        <InputLabel>Subcategory</InputLabel>
+                        <Select
+                            value={selectedSubcategory?.id || ''}
+                            onChange={handleSubcategoryChange}
+                            label="Subcategory"
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            {selectedCategory?.subCategories?.map((subcategory) => (
+                                <MenuItem key={subcategory.id} value={subcategory.id} disabled={!subcategory.isPublished}>
+                                    {subcategory.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </section>
             </Card>
             <Card card= { {cardHeader: ""}}>

@@ -1,37 +1,39 @@
-import { Box, Button, Collapse, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { Box,  Collapse, Drawer, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { GetIcon } from "../../helpers/GetIcons";
-import { NavigateTo } from "../../services/Navigate";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { NotificationsActions } from "../../store/Notifications";
+import { GetIcon } from "../../../helpers/GetIcons";
+import { Card } from "../../../basecomponents/Card";
+import { ICategory } from "../../../models/ICategory";
+import { SubCategoryEdit } from "./Edit";
 
 
-export const ProductList = () => {
+const SubCategoryList = () => {
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
-    const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
     const clsChild = "font-Play font-medium overflow-scroll";
 
-    var navigate = useNavigate();
-    var dispatch = useDispatch();
+    const [editSubCategory, setEditSubCategory] = useState<number | null>(null);
+    const [subCategories, setSubCategories] = useState<ICategory[]>();
 
     useEffect(() => {
-      dispatch(NotificationsActions.setHeaderMessage( "PRODUCTS" ));
-    });      
 
+      var subCategories: ICategory[] = [
+        {id: 1, name: "Vegetables", isPublished: true, parentCategory: 1},
+        {id: 2, name: "Fruits", isPublished: true, parentCategory: 1},
+        {id: 3, name: "Dairy", isPublished: true, parentCategory: 1},
+      ]
+
+      setSubCategories(subCategories);
+    }, []);
 
     function createData(
         id: number,
         name: string,
-        price: number,
         published: boolean,
       ) {
         return {
           id,
           name,
-          price,
           published,
           history: [
             {
@@ -46,9 +48,9 @@ export const ProductList = () => {
             },
           ],
         };
-      }
+    }
       
-      function Row(props: { row: ReturnType<typeof createData> }) {
+    function Row(props: { row: ReturnType<typeof createData> }) {
         const { row } = props;
         const [open, setOpen] = React.useState(false);
       
@@ -67,18 +69,12 @@ export const ProductList = () => {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell >{row.price}</TableCell>
               <TableCell >
                 <Switch defaultChecked={row.published} />
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsEdit(navigate, row.id)}>
-                        <IconButton aria-label="Example">
-                            {GetIcon("dashboard", "")}
-                        </IconButton>
-                    </span>
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => setEditSubCategory(row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("dashboard", "")}
                         </IconButton>
@@ -90,7 +86,6 @@ export const ProductList = () => {
                     </span>
                 </section>                
              </TableCell>
-
              
             </TableRow>
             <TableRow>
@@ -106,7 +101,6 @@ export const ProductList = () => {
                           <TableCell>Date</TableCell>
                           <TableCell>Customer</TableCell>
                           <TableCell >Amount</TableCell>
-                          <TableCell >Total price ($)</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -117,9 +111,6 @@ export const ProductList = () => {
                             </TableCell>
                             <TableCell>{historyRow.customerId}</TableCell>
                             <TableCell >{historyRow.amount}</TableCell>
-                            <TableCell >
-                              {Math.round(historyRow.amount * row.price * 100) / 100}
-                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -130,21 +121,12 @@ export const ProductList = () => {
             </TableRow>
           </React.Fragment>
         );
-      }
-      const rows = [
-        createData(1, 'Tomato', 30, true),
-        createData(2, 'Brocoli', 25, true),
-        createData(3, 'Carrot', 40, true),
-        createData(4, 'Spinach', 10, false),
-        createData(5,'Bottle Gourd', 20, true),
-      ];
+    }
+
+    const rows = subCategories?.map(cat => createData(cat.id, cat.name, cat.isPublished))
 
     return <>
         <article className={clsContainer}>
-            <section className={clsHeader}>
-                <h6> Products List</h6>
-                <Button variant="contained" onClick={() => NavigateTo.ProductsCreate(navigate)}>Add Product</Button>
-            </section>
             <section className={clsChild}>
                 {/* <TableContainer component={Paper}> */}
                     <Table aria-label="collapsible table">
@@ -156,14 +138,13 @@ export const ProductList = () => {
                 >
                   <KeyboardArrowDownIcon />
                 </IconButton></TableCell>
-                            <TableCell>Product</TableCell>
-                            <TableCell>Price</TableCell>
+                            <TableCell>Cagetory</TableCell>
                             <TableCell>Published</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {rows.map((row) => (
+                        {rows?.map((row) => (
                             <Row key={row.name} row={row} />
                         ))}
                         </TableBody>
@@ -171,7 +152,7 @@ export const ProductList = () => {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={rows.length}
+                        count={rows?.length || 0}
                         rowsPerPage={10}
                         page={1}
                         onPageChange={() => {}}
@@ -179,6 +160,16 @@ export const ProductList = () => {
         />
                 {/* </TableContainer> */}
             </section>
+
+            <Drawer open={editSubCategory != null} onClose={() => {setEditSubCategory(null)}} className="w-full" anchor={"right"} PaperProps={{
+            sx: {backgroundColor: "rgb(249, 247, 247)", width: "300px"} }}>
+                <Card card= { {cardHeader: "Add Sub Category"}}>
+                    
+                    <SubCategoryEdit category={subCategories?.find(cat => cat.id === editSubCategory)}/>
+                </Card>
+            </Drawer>
         </article>
     </>
 }
+
+export default SubCategoryList;

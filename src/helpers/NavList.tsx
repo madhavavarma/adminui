@@ -18,35 +18,35 @@ export const NavList : INav[] = [
             {id: 13, name: "Details", navigateTo: "/categories/details", isActive: false},
             {id: 14, name: "Edit", navigateTo: "/categories/edit", isActive: false},
         ]},
-        {id: 15, name: "Attributes", iconName: "ShoppingCart", isActive: false, children: [
+        {id: 15, name: "Attributes", iconName: "ViewCarousel", isActive: false, children: [
             {id: 16, name: "List", navigateTo: "/categories/list", isActive: false},
             {id: 17, name: "Details", navigateTo: "/categories/details", isActive: false},
             {id: 18, name: "Edit", navigateTo: "/categories/edit", isActive: false},
         ]},
-        {id: 19, name: "Tags", iconName: "ShoppingCart", isActive: false, children: [
+        {id: 19, name: "Tags", iconName: "Search", isActive: false, children: [
             {id: 20, name: "List", navigateTo: "/tags/list", isActive: false},
         ]}
 
     ]},
 
     {id: 23, name:  "Users", isActive: false, children: [
-        {id: 24, name: "Profile", navigateTo: "/dashboard", isActive: false},
-        {id: 25, name: "Roles", iconName: "ShoppingBag", isActive: false, children: [
+        {id: 24, name: "Profile", navigateTo: "/profile", iconName: "AccountCircle", isActive: false},
+        {id: 25, name: "Roles", iconName: "Group", isActive: false, children: [
             {id: 26, name: "List", navigateTo: "/products/list", isActive: false},
             {id: 27, name: "Create", navigateTo: "/products/create", isActive: false},
             {id: 28, name: "Edit", navigateTo: "/products/edit", isActive: false},
         ]},
-        {id: 29, name: "Permissions", iconName: "Category", isActive: false, children: [
+        {id: 29, name: "Permissions", iconName: "Security", isActive: false, children: [
             {id: 30, name: "List", navigateTo: "/categories/list", isActive: false},
             {id: 31, name: "Create", navigateTo: "/categories/create", isActive: false},
             {id: 32, name: "Edit", navigateTo: "/categories/edit", isActive: false},
         ]},
-        {id: 33, name: "Customers", iconName: "ShoppingCart", isActive: false, children: [
+        {id: 33, name: "Customers", iconName: "People", isActive: false, children: [
             {id: 34, name: "List", navigateTo: "/categories/list", isActive: false},
             {id: 35, name: "Details", navigateTo: "/categories/details", isActive: false},
             {id: 36, name: "Edit", navigateTo: "/categories/edit", isActive: false},
         ]},
-        {id: 37, name: "Sellers", iconName: "ShoppingCart", isActive: false, children: [
+        {id: 37, name: "Sellers", iconName: "Business", isActive: false, children: [
             {id: 38, name: "List", navigateTo: "/categories/list", isActive: false},
             {id: 39, name: "Details", navigateTo: "/categories/details", isActive: false},
             {id: 40, name: "Edit", navigateTo: "/categories/edit", isActive: false},
@@ -55,8 +55,8 @@ export const NavList : INav[] = [
     ]},
 
     {id: 41, name:  "Others", isActive: false, children: [
-        {id: 42, name: "Coupons", isActive: false, navigateTo: "/dashboard"},
-        {id: 43, name: "Reviews", iconName: "ShoppingBag", isActive: false, children: [
+        {id: 42, name: "Coupons", isActive: false, iconName: "LocalOffer", navigateTo: "/dashboard"},
+        {id: 43, name: "Reviews", iconName: "Star", isActive: false, children: [
             {id: 44, name: "List", navigateTo: "/products/list", isActive: false},
             {id: 45, name: "Create", navigateTo: "/products/create", isActive: false},
             {id: 46, name: "Edit", navigateTo: "/products/edit", isActive: false},

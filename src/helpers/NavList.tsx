@@ -3,27 +3,27 @@ import { INav } from "../models/INav";
 export const NavList : INav[] = [
     {id: 1, name:  "General", isActive: false, children: [
         {id: 2, name: "Dashboard", navigateTo: "/dashboard", isActive: false},
-        {id: 3, name: "Products", iconName: "ShoppingBag", isActive: false, children: [
+        {id: 3, name: "Products", iconName: "ShoppingBag", navigateTo: "/products/list", isActive: false, children: [
             {id: 4, name: "List", navigateTo: "/products/list", isActive: false},
             {id: 5, name: "Create", navigateTo: "/products/create", isActive: false},
             {id: 6, name: "Edit", navigateTo: "/products/edit", isActive: false},
         ]},
-        {id: 7, name: "categories", iconName: "Category", isActive: false, children: [
+        {id: 7, name: "categories", iconName: "Category", navigateTo: "/categories/list", isActive: false, children: [
             {id: 8, name: "List", navigateTo: "/categories/list", isActive: false},
             {id: 9, name: "Create", navigateTo: "/categories/create", isActive: false},
             {id: 10, name: "Edit", navigateTo: "/categories/edit", isActive: false},
         ]},
-        {id: 11, name: "Orders", iconName: "ShoppingCart", isActive: false, children: [
-            {id: 12, name: "List", navigateTo: "/categories/list", isActive: false},
-            {id: 13, name: "Details", navigateTo: "/categories/details", isActive: false},
-            {id: 14, name: "Edit", navigateTo: "/categories/edit", isActive: false},
+        {id: 11, name: "Orders", iconName: "ShoppingCart", navigateTo: "/orders/list", isActive: false, children: [
+            {id: 12, name: "List", navigateTo: "/orders/list", isActive: false},
+            {id: 13, name: "Details", navigateTo: "/orders/details", isActive: false},
+            {id: 14, name: "Edit", navigateTo: "/orders/edit", isActive: false},
         ]},
-        {id: 15, name: "Attributes", iconName: "ViewCarousel", isActive: false, children: [
-            {id: 16, name: "List", navigateTo: "/categories/list", isActive: false},
-            {id: 17, name: "Details", navigateTo: "/categories/details", isActive: false},
-            {id: 18, name: "Edit", navigateTo: "/categories/edit", isActive: false},
+        {id: 15, name: "Attributes", iconName: "ViewCarousel", navigateTo: "/attributes/list", isActive: false, children: [
+            {id: 16, name: "List", navigateTo: "/attributes/list", isActive: false},
+            {id: 17, name: "Details", navigateTo: "/attributes/details", isActive: false},
+            {id: 18, name: "Edit", navigateTo: "/attributes/edit", isActive: false},
         ]},
-        {id: 19, name: "Tags", iconName: "Search", isActive: false, children: [
+        {id: 19, name: "Tags", iconName: "Search", isActive: false, navigateTo: "/tags/list", children: [
             {id: 20, name: "List", navigateTo: "/tags/list", isActive: false},
         ]}
 

@@ -1,4 +1,4 @@
-import { Button, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField } from "@mui/material"
+import { Autocomplete, Button, Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField } from "@mui/material"
 import { Card } from "../../basecomponents/Card"
 import { useEffect, useState } from "react";
 import { IProduct } from "../../models/IProduct";
@@ -8,6 +8,7 @@ import { NotificationsActions } from "../../store/Notifications";
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "../../services/Navigate";
 import { ICategory } from "../../models/ICategory";
+import { ITag } from "../../models/ITag";
 
 interface IProps {
     product?: IProduct,
@@ -112,6 +113,24 @@ export const ProductCreate = (props: IProps) => {
         setSelectedMinicategory(miniCategory);
     };
 
+
+    const [productTags, setProductTags] = useState<ITag[]>();
+
+    const tags: ITag[]= [
+      { id: 1, name: 'Option 1', isPublished: true },
+      { id: 2, name: 'Option 2', isPublished: true },
+      { id: 3, name: 'Option 3', isPublished: true },
+      { id: 4, name: 'Option 4', isPublished: true },
+      { id: 5, name: 'Option 5', isPublished: true }
+    ];
+
+    const handleChange = (event: any, value: ITag[]) => {
+        event = event;
+        setProductTags(value);
+    };
+  
+   
+
     return <>
         {show && <article>
              <MainAlert message="Fields marked with (*) are mandatory" />
@@ -198,6 +217,24 @@ export const ProductCreate = (props: IProps) => {
                     </FormControl>
                 </section>
             </Card>
+            <Card card= { {cardHeader: "Tags"}}>
+            <Autocomplete
+                multiple
+                options={tags}
+                getOptionLabel={(tag) => tag.name}
+                value={productTags}
+                onChange={() => handleChange}
+                renderInput={(params) => (
+                    <TextField {...params} variant="outlined" label="Select Tags" placeholder="Choose Tags" />
+                )}
+                renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                    <Chip label={option.name} {...getTagProps({ index })} />
+                    ))
+                }
+                />
+            </Card>
+            
             <Card card= { {cardHeader: ""}}>
                 <section className="grid grid-cols-2 gap-8 rounded-lg">
                     <Button variant="outlined" onClick={() => NavigateTo.Products(navigate)}>Cancel</Button>

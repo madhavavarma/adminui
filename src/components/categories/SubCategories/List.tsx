@@ -89,12 +89,17 @@ const SubCategoryList = () => {
                 <section className="flex items-center gap-2">
                     <span className="bg-btn-icon-color-dull rounded" onClick={() => setEditSubCategory(row.id)}>
                         <IconButton aria-label="Example">
-                            {GetIcon("dashboard", "")}
+                          {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
                     <span className="bg-btn-icon-color-dull rounded">
                         <IconButton aria-label="Example">
-                            {GetIcon("dashboard", "")}
+                            {GetIcon("edit", "--btn-icon-color-edit")}
+                        </IconButton>
+                    </span>
+                    <span className="bg-btn-icon-color-dull rounded">
+                        <IconButton aria-label="Example">
+                          {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>
                     </span>
                 </section>                
@@ -177,7 +182,6 @@ const SubCategoryList = () => {
             <Drawer open={editSubCategory != null} onClose={() => {setEditSubCategory(null)}} className="w-full" anchor={"right"} PaperProps={{
             sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
                 <Card card= { {cardHeader: "Add Sub Category"}}>
-                    
                     <SubCategoryEdit category={subCategories?.find(cat => cat.id === editSubCategory)}/>
                 </Card>
             </Drawer>

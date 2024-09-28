@@ -1,37 +1,49 @@
-import { Box, Button, Collapse, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { Box, Button, Collapse, Drawer, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { GetIcon } from "../../helpers/GetIcons";
-import { NavigateTo } from "../../services/Navigate";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { NotificationsActions } from "../../store/Notifications";
+import { Card } from "../../basecomponents/Card";
+import { TagEdit } from "./Edit";
+import { ITag } from "../../models/ITag";
+import { TagCreate } from "./Create";
 
 
-export const CategoryList = () => {
+export const TagsList = () => {
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
     const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
     const clsChild = "font-Play font-medium overflow-scroll";
 
-   
-    var navigate = useNavigate();
     var dispatch = useDispatch();
 
+    const [editTag, setEditTag] = useState<number | null>(null);
+    const [createTag, setCreateTag] = useState<boolean>(false);
+    const [tags, setTags] = useState<ITag[]>();
+
     useEffect(() => {
-        dispatch(NotificationsActions.setHeaderMessage( "CATEGORIES" ));
-      });
+      dispatch(NotificationsActions.setHeaderMessage( "TAGS" ));
+
+      setTags([
+        createData(1, 'Organic',  true),
+        createData(2, 'Leafy',  true),
+        createData(3, 'Vegetables',  true),
+        createData(4, 'Fruits',  false),
+        createData(5,'Healthy',  true),
+      ])
+    }, []);      
 
 
     function createData(
         id: number,
         name: string,
-        published: boolean,
+        isPublished: boolean,
       ) {
         return {
           id,
           name,
-          published,
+          isPublished,
           history: [
             {
               date: '2020-01-05',
@@ -47,7 +59,7 @@ export const CategoryList = () => {
         };
       }
       
-      function Row(props: { row: ReturnType<typeof createData> }) {
+      function Row(props: { row: ITag }) {
         const { row } = props;
         const [open, setOpen] = React.useState(false);
       
@@ -67,17 +79,17 @@ export const CategoryList = () => {
                 {row.name}
               </TableCell>
               <TableCell >
-                <Switch defaultChecked={row.published} />
+                <Switch defaultChecked={row.isPublished} />
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.CaregoriesEdit(navigate, row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => setEditTag(row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
                     <span className="bg-btn-icon-color-dull rounded">
-                        <IconButton aria-label="Example">
+                        <IconButton aria-label="Example" onClick={() => setEditTag(row.id)}>
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span>
@@ -104,18 +116,20 @@ export const CategoryList = () => {
                           <TableCell>Date</TableCell>
                           <TableCell>Customer</TableCell>
                           <TableCell >Amount</TableCell>
+                          <TableCell >Total price ($)</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {row.history.map((historyRow) => (
+                        {/* {row.history?.map((historyRow) => (
                           <TableRow key={historyRow.date}>
                             <TableCell component="th" scope="row">
                               {historyRow.date}
                             </TableCell>
                             <TableCell>{historyRow.customerId}</TableCell>
                             <TableCell >{historyRow.amount}</TableCell>
+                            
                           </TableRow>
-                        ))}
+                        ))} */}
                       </TableBody>
                     </Table>
                   </Box>
@@ -125,18 +139,14 @@ export const CategoryList = () => {
           </React.Fragment>
         );
       }
-      const rows = [
-        createData(1, 'Vegetables', true),
-        createData(2, 'Fruits', true),
-        createData(3, 'Dairy', true)
-      ];
+      
 
     return <>
         <article className={clsContainer}>
             <section className={clsHeader}>
-                <h6> Categories List</h6>
-                <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => NavigateTo.CategoriesCreate(navigate)}>
-                  <span className="text-gray-100 font-bold tracking-wider">Add Category</span>
+                <h6> Tags List</h6>
+                <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => setCreateTag(true)}>
+                    <span className="text-gray-100 font-bold tracking-wider">Add Tag</span>
                 </Button>
             </section>
             <section className={clsChild}>
@@ -150,13 +160,13 @@ export const CategoryList = () => {
                 >
                   <KeyboardArrowDownIcon />
                 </IconButton></TableCell>
-                            <TableCell>Cagetory</TableCell>
+                            <TableCell>Tag</TableCell>
                             <TableCell>Published</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {rows.map((row) => (
+                        {tags?.map((row) => (
                             <Row key={row.name} row={row} />
                         ))}
                         </TableBody>
@@ -164,7 +174,7 @@ export const CategoryList = () => {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={rows.length}
+                        count={tags?.length || 0}
                         rowsPerPage={10}
                         page={1}
                         onPageChange={() => {}}
@@ -172,6 +182,20 @@ export const CategoryList = () => {
         />
                 {/* </TableContainer> */}
             </section>
+
+            <Drawer open={createTag} onClose={() => {setCreateTag(false)}}  className="w-full" anchor={"right"} PaperProps={{
+            sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
+                <Card card= { {cardHeader: "Create Tag"}}>
+                    <TagCreate />
+                </Card>
+            </Drawer>
+
+            <Drawer open={editTag != null} onClose={() => {setEditTag(null)}} className="w-full" anchor={"right"} PaperProps={{
+            sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
+                <Card card= { {cardHeader: "Edit Tag"}}>
+                    <TagEdit tag={tags?.find(tag => tag.id === editTag)}/>
+                </Card>
+            </Drawer>
         </article>
     </>
 }

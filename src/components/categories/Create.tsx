@@ -73,7 +73,9 @@ export const CategoryCreate = (props: IProps) => {
             <section className={clsContainer}>
                 <section className={clsHeader}>
                     <h6> Sub Categories </h6>
-                    <Button variant="contained" onClick={() => {setShowSubCatDrawer(true)}}>Add Sub Category</Button>
+                    <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => {setShowSubCatDrawer(true)}}>
+                    <span className="text-gray-100 font-bold tracking-wider">Add Sub Category</span>
+                    </Button>
                 </section>
                 <SubCategoryList />
             </section>

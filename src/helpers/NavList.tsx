@@ -24,9 +24,7 @@ export const NavList : INav[] = [
             {id: 18, name: "Edit", navigateTo: "/categories/edit", isActive: false},
         ]},
         {id: 19, name: "Tags", iconName: "ShoppingCart", isActive: false, children: [
-            {id: 20, name: "List", navigateTo: "/categories/list", isActive: false},
-            {id: 21, name: "Details", navigateTo: "/categories/details", isActive: false},
-            {id: 22, name: "Edit", navigateTo: "/categories/edit", isActive: false},
+            {id: 20, name: "List", navigateTo: "/tags/list", isActive: false},
         ]}
 
     ]},

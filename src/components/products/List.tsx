@@ -75,17 +75,17 @@ export const ProductList = () => {
                 <section className="flex items-center gap-2">
                     <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsEdit(navigate, row.id)}>
                         <IconButton aria-label="Example">
-                            {GetIcon("dashboard", "")}
+                          {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
                     <span className="bg-btn-icon-color-dull rounded">
                         <IconButton aria-label="Example">
-                            {GetIcon("dashboard", "")}
+                            {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span>
                     <span className="bg-btn-icon-color-dull rounded">
                         <IconButton aria-label="Example">
-                            {GetIcon("dashboard", "")}
+                            {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>
                     </span>
                 </section>                
@@ -143,7 +143,9 @@ export const ProductList = () => {
         <article className={clsContainer}>
             <section className={clsHeader}>
                 <h6> Products List</h6>
-                <Button variant="contained" onClick={() => NavigateTo.ProductsCreate(navigate)}>Add Product</Button>
+                <Button variant="contained" onClick={() => NavigateTo.ProductsCreate(navigate)}>
+                  <span className="text-gray-100 font-bold tracking-wider">Add Product</span>
+                </Button>
             </section>
             <section className={clsChild}>
                 {/* <TableContainer component={Paper}> */}

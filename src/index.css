@@ -46,6 +46,9 @@
 
     --text-header-color: #313b5e;
     --btn-icon-color-dull: #eef2f7; 
+    --btn-icon-color-view: #313b5e;
+    --btn-icon-color-edit: #662b13;
+    --btn-icon-color-delete: #ffa782;
 
 }
 

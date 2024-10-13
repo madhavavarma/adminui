@@ -34,4 +34,17 @@ export  class  NavigateTo  {
     static CaregoriesEdit = (navigate: NavigateFunction, id: number) => {
         navigate("/categories/edit/" +id)
     }
+
+    // Variants
+    static Variants = (navigate: NavigateFunction) => {
+        navigate("/variants/list")
+    }
+
+    static VariantsCreate = (navigate: NavigateFunction) => {
+        navigate("/variants/create")
+    }
+
+    static VarinatsEdit = (navigate: NavigateFunction, id: number) => {
+        navigate("/variants/edit/" +id)
+    }
 }

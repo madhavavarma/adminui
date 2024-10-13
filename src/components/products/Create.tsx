@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField } from "@mui/material"
+import { Autocomplete, Box, Button, Chip, Collapse, Drawer, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TextField, Typography } from "@mui/material"
 import { Card } from "../../basecomponents/Card"
 import { useEffect, useState } from "react";
 import { IProduct } from "../../models/IProduct";
@@ -9,6 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "../../services/Navigate";
 import { ICategory } from "../../models/ICategory";
 import { ITag } from "../../models/ITag";
+import React from "react";
+import { GetIcon } from "../../helpers/GetIcons";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { ProductVariantCreate } from "./variants/Create";
+import { ProductVariantEdit } from "./variants/Edit";
 
 interface IProps {
     product?: IProduct,
@@ -43,6 +49,10 @@ interface IProps {
 
 export const ProductCreate = (props: IProps) => {
 
+    const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4 mt-8";
+    const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
+    const clsChild = "font-Play font-medium overflow-scroll";
+
     const dispatch = useDispatch();
     var navigate = useNavigate();
 
@@ -58,6 +68,9 @@ export const ProductCreate = (props: IProps) => {
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
     const [selectedSubcategory, setSelectedSubcategory] = useState<ICategory | null>(null);
     const [selectedMinicategory, setSelectedMinicategory] = useState<ICategory | null>(null);
+    
+    const [createVariant, setCreateVariant] = useState<boolean>(false);
+    const [editVariant, setEditVariant] = useState<number | null>(null);
 
     useEffect(() => {
         dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT PRODUCT" : "ADD PRODUCT"));
@@ -128,7 +141,114 @@ export const ProductCreate = (props: IProps) => {
         event = event;
         setProductTags(value);
     };
-  
+
+    function createVariantData(
+        id: number,
+        name: string,
+        published: boolean,
+      ) {
+        return {
+          id,
+          name,
+          published,
+          history: [
+            {
+              date: '2020-01-05',
+              customerId: '11091700',
+              amount: 3,
+            },
+            {
+              date: '2020-01-02',
+              customerId: 'Anonymous',
+              amount: 1,
+            },
+          ],
+        };
+      }
+      
+      function VariantRow(props: { row: ReturnType<typeof createVariantData> }) {
+        const { row } = props;
+        const [open, setOpen] = React.useState(false);
+      
+        return (
+          <React.Fragment>
+            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+              <TableCell>
+                <IconButton
+                  aria-label="expand row"
+                  size="small"
+                  onClick={() => setOpen(!open)}
+                >
+                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell >
+                <Switch defaultChecked={row.published} />
+             </TableCell>
+             <TableCell >
+                <section className="flex items-center gap-2">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => setEditVariant(row.id)}>
+                        <IconButton aria-label="Example">
+                            {GetIcon("visibility", "--btn-icon-color-view")}
+                        </IconButton>
+                    </span>
+                    <span className="bg-btn-icon-color-dull rounded">
+                        <IconButton aria-label="Example">
+                            {GetIcon("edit", "--btn-icon-color-edit")}
+                        </IconButton>
+                    </span>
+                    <span className="bg-btn-icon-color-dull rounded">
+                        <IconButton aria-label="Example">
+                            {GetIcon("delete", "--btn-icon-color-delete")}
+                        </IconButton>
+                    </span>
+                </section>                
+             </TableCell>
+
+             
+            </TableRow>
+            <TableRow>
+              <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                  <Box sx={{ margin: 1 }}>
+                    <Typography variant="h6" gutterBottom component="div">
+                      History
+                    </Typography>
+                    <Table size="small" aria-label="purchases">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Date</TableCell>
+                          <TableCell>Customer</TableCell>
+                          <TableCell >Amount</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {row.history.map((historyRow) => (
+                          <TableRow key={historyRow.date}>
+                            <TableCell component="th" scope="row">
+                              {historyRow.date}
+                            </TableCell>
+                            <TableCell>{historyRow.customerId}</TableCell>
+                            <TableCell >{historyRow.amount}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Box>
+                </Collapse>
+              </TableCell>
+            </TableRow>
+          </React.Fragment>
+        );
+      }
+      const variantRows = [
+        createVariantData(1, 'Size', true),
+        createVariantData(2, 'Color', true),
+        createVariantData(3, 'Weight', true)
+      ]; 
    
 
     return <>
@@ -151,6 +271,62 @@ export const ProductCreate = (props: IProps) => {
                     <TextField id="discount" label="Discount" variant="outlined" size="small" type="number" value={discount} onChange={(e: any) => setDiscount(e.target.value)}/>
                     <TextField multiline id="tax" label="Tax" variant="outlined" size="small" type="number" value={tax} onChange={(e: any) => setTax(e.target.value)}/>
                 </section>
+                <article className={clsContainer}>
+                    <section className={clsHeader}>
+                        <h6> Variants List</h6>
+                        <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => setCreateVariant(true)}>
+                        <span className="text-gray-100 font-bold tracking-wider">Add Variant</span>
+                        </Button>
+                    </section>
+                    <section className={clsChild}>
+                        {/* <TableContainer component={Paper}> */}
+                            <Table aria-label="collapsible table">
+                                <TableHead>
+                                <TableRow>
+                                    <TableCell><IconButton
+                        aria-label="expand row"
+                        size="small"
+                        >
+                        {/* <KeyboardArrowDownIcon /> */}
+                        </IconButton></TableCell>
+                                    <TableCell>Variant</TableCell>
+                                    <TableCell>Published</TableCell>
+                                    <TableCell>Action</TableCell>
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {variantRows.map((row) => (
+                                    <VariantRow key={row.name} row={row} />
+                                ))}
+                                </TableBody>
+                            </Table>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                component="div"
+                                count={variantRows.length}
+                                rowsPerPage={10}
+                                page={1}
+                                onPageChange={() => {}}
+                                // onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+                        {/* </TableContainer> */}
+                    </section>
+
+                    <Drawer open={createVariant} onClose={() => {setCreateVariant(false)}}  className="w-full" anchor={"right"} PaperProps={{
+                        sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
+                            <Card card= { {cardHeader: "Add Variant"}}>
+                                <ProductVariantCreate />
+                            </Card>
+                        </Drawer>
+
+                        <Drawer open={!!editVariant} onClose={() => {setEditVariant(null)}}   className="w-full" anchor={"right"} PaperProps={{
+                        sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
+                            <Card card= { {cardHeader: "Edit Variant"}}>
+                                <ProductVariantEdit />
+                            </Card>
+                        </Drawer>
+                </article>
+                
             </Card>
             <Card card= { {cardHeader: "Categories"}}>
                 <section className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-8">

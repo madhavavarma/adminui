@@ -18,10 +18,10 @@ export const NavList : INav[] = [
             {id: 13, name: "Details", navigateTo: "/orders/details", isActive: false},
             {id: 14, name: "Edit", navigateTo: "/orders/edit", isActive: false},
         ]},
-        {id: 15, name: "Attributes", iconName: "ViewCarousel", navigateTo: "/attributes/list", isActive: false, children: [
-            {id: 16, name: "List", navigateTo: "/attributes/list", isActive: false},
-            {id: 17, name: "Details", navigateTo: "/attributes/details", isActive: false},
-            {id: 18, name: "Edit", navigateTo: "/attributes/edit", isActive: false},
+        {id: 15, name: "Variants", iconName: "ViewCarousel", navigateTo: "/variants/list", isActive: false, children: [
+            {id: 16, name: "List", navigateTo: "/variants/list", isActive: false},
+            {id: 17, name: "Create", navigateTo: "/variants/create", isActive: false},
+            {id: 18, name: "Edit", navigateTo: "/variants/edit", isActive: false},
         ]},
         {id: 19, name: "Tags", iconName: "Search", isActive: false, navigateTo: "/tags/list", children: [
             {id: 20, name: "List", navigateTo: "/tags/list", isActive: false},

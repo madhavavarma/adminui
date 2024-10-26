@@ -4,6 +4,10 @@ import { TagCreate } from "./Create";
 
 interface IProps {
     tag?: ITag 
+    isEdit?: boolean,
+    isDelete?: boolean,
+    isView?: boolean,
+    close: () => void
 }
 
 export const TagEdit = (props: IProps) => {
@@ -18,6 +22,6 @@ export const TagEdit = (props: IProps) => {
     }, [])
 
     return <>
-        {tag && <TagCreate tag={tag} isEdit={true} /> }
+        {tag && <TagCreate tag={tag} isEdit={props.isEdit} isView={props.isView} isDelete={props.isDelete} close={props.close} /> }
     </>
 }

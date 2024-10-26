@@ -1,0 +1,7 @@
+[
+    {"id": "1", "name": "organic", "isPublished": true},
+    {"id": "2", "name": "Leafy", "isPublished": true},
+    {"id": "3", "name": "Vegetables", "isPublished": true},
+    {"id": "4", "name": "Fruits", "isPublished": true},
+    {"id": "5", "name": "Healthy", "isPublished": true}
+]

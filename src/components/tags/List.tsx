@@ -9,6 +9,7 @@ import { Card } from "../../basecomponents/Card";
 import { TagEdit } from "./Edit";
 import { ITag } from "../../models/ITag";
 import { TagCreate } from "./Create";
+import { getTags } from "../../services/api";
 
 
 export const TagsList = () => {
@@ -19,47 +20,26 @@ export const TagsList = () => {
     var dispatch = useDispatch();
 
     const [editTag, setEditTag] = useState<number | null>(null);
+    const [viewTag, setViewTag] = useState<number | null>(null);
+    const [deleteTag, setDeleteTag] = useState<number | null>(null);
     const [createTag, setCreateTag] = useState<boolean>(false);
     const [tags, setTags] = useState<ITag[]>();
 
     useEffect(() => {
       dispatch(NotificationsActions.setHeaderMessage( "TAGS" ));
+      getTags().then((tags: ITag[]) => setTags(tags));     
+    }, []);   
 
-      setTags([
-        createData(1, 'Organic',  true),
-        createData(2, 'Leafy',  true),
-        createData(3, 'Vegetables',  true),
-        createData(4, 'Fruits',  false),
-        createData(5,'Healthy',  true),
-      ])
-    }, []);      
-
-
-    function createData(
-        id: number,
-        name: string,
-        isPublished: boolean,
-      ) {
-        return {
-          id,
-          name,
-          isPublished,
-          history: [
-            {
-              date: '2020-01-05',
-              customerId: '11091700',
-              amount: 3,
-            },
-            {
-              date: '2020-01-02',
-              customerId: 'Anonymous',
-              amount: 1,
-            },
-          ],
-        };
-      }
+    const close = () => {
+      setDeleteTag(null);
+      setEditTag(null);
+      setViewTag(null);
+      setCreateTag(false);
+    }
+    
+    
       
-      function Row(props: { row: ITag }) {
+    function Row(props: { row: ITag }) {
         const { row } = props;
         const [open, setOpen] = React.useState(false);
       
@@ -83,7 +63,7 @@ export const TagsList = () => {
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => setEditTag(row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => setViewTag(row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
@@ -94,7 +74,7 @@ export const TagsList = () => {
                         </IconButton>
                     </span>
                     <span className="bg-btn-icon-color-dull rounded">
-                        <IconButton aria-label="Example">
+                        <IconButton aria-label="Example" onClick={() => setDeleteTag(row.id)}>
                             {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>
                     </span>
@@ -138,7 +118,7 @@ export const TagsList = () => {
             </TableRow>
           </React.Fragment>
         );
-      }
+    }
       
 
     return <>
@@ -171,29 +151,40 @@ export const TagsList = () => {
                         ))}
                         </TableBody>
                     </Table>
-                    <TablePagination
+                    {tags && tags.length && <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
                         count={tags?.length || 0}
                         rowsPerPage={10}
-                        page={1}
-                        onPageChange={() => {}}
+                        page={0}
+                        onPageChange={() => {}} 
                         // onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        />}
                 {/* </TableContainer> */}
             </section>
 
             <Drawer open={createTag} onClose={() => {setCreateTag(false)}}  className="w-full" anchor={"right"} PaperProps={{
             sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
                 <Card card= { {cardHeader: "Create Tag"}}>
-                    <TagCreate />
+                    <TagCreate isCreate={true} close={close}/>
                 </Card>
             </Drawer>
-
             <Drawer open={editTag != null} onClose={() => {setEditTag(null)}} className="w-full" anchor={"right"} PaperProps={{
             sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
                 <Card card= { {cardHeader: "Edit Tag"}}>
-                    <TagEdit tag={tags?.find(tag => tag.id === editTag)}/>
+                    <TagEdit tag={tags?.find(tag => tag.id === editTag)} isEdit={true} close={close}/>
+                </Card>
+            </Drawer>
+            <Drawer open={viewTag != null} onClose={() => {setViewTag(null)}} className="w-full" anchor={"right"} PaperProps={{
+            sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
+                <Card card= { {cardHeader: "View Tag"}}>
+                    <TagEdit tag={tags?.find(tag => tag.id === viewTag)} isView={true} close={close}/>
+                </Card>
+            </Drawer>
+            <Drawer open={deleteTag != null} onClose={() => {setDeleteTag(null)}} className="w-full" anchor={"right"} PaperProps={{
+            sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
+                <Card card= { {cardHeader: "Delete Tag"}}>
+                    <TagEdit tag={tags?.find(tag => tag.id === deleteTag)} isDelete={true} close={close}/>
                 </Card>
             </Drawer>
         </article>

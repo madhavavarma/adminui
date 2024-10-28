@@ -1,0 +1,22 @@
+[
+    {
+        "id": "1",
+        "name": "Size",
+        "isPublished": true,
+        "options": [
+            { "id": "1", "variantId": "1", "name": "Small", "isPublished": true },
+            { "id": "2", "variantId": "1", "name": "Medium", "isPublished": true },
+            { "id": "3", "variantId": "1", "name": "Large", "isPublished": true }
+        ]
+    },
+    {
+        "id": "2",
+        "name": "Color",
+        "isPublished": true,
+        "options": [
+            { "id": "4", "variantId": "2", "name": "Red", "isPublished": true },
+            { "id": "5", "variantId": "2", "name": "Green", "isPublished": true },
+            { "id": "6", "variantId": "2", "name": "Blue", "isPublished": true }
+        ]
+    }
+]

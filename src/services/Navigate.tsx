@@ -47,4 +47,12 @@ export  class  NavigateTo  {
     static VarinatsEdit = (navigate: NavigateFunction, id: number) => {
         navigate("/variants/edit/" +id)
     }
+
+    static VarinatsView = (navigate: NavigateFunction, id: number) => {
+        navigate("/variants/view/" +id)
+    }
+
+    static VarinatsDelete = (navigate: NavigateFunction, id: number) => {
+        navigate("/variants/delete/" +id)
+    }
 }

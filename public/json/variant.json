@@ -1,0 +1,11 @@
+
+{
+    "id": "1",
+    "name": "Size",
+    "isPublished": true,
+    "options": [
+        { "id": "1", "variantId": "1", "name": "Small", "isPublished": true },
+        { "id": "2", "variantId": "1", "name": "Medium", "isPublished": true },
+        { "id": "3", "variantId": "1", "name": "Large", "isPublished": true }
+    ]
+}

@@ -4,11 +4,10 @@ import { IOption } from "../../../models/IOption";
 
 interface IProps {
     option?: IOption,
-    updateOption: (option: IOption) => void
     cancel: () => void  
 }
 
-export const OptionEdit = (props: IProps) => {
+export const OptionView = (props: IProps) => {
 
     const [option, setOption] = useState(props.option);
 
@@ -19,6 +18,6 @@ export const OptionEdit = (props: IProps) => {
     }, [])
 
     return <>
-        {option && <OptionCreate option={option} isEdit={true} cancel={props.cancel} updateOption={props.updateOption} /> }
+        {option && <OptionCreate option={option} isView={true} cancel={props.cancel} /> }
     </>
 }

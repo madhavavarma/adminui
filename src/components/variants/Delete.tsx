@@ -4,7 +4,7 @@ import { VariantCreate } from "./Create";
 import { IVariant } from "../../models/IVariant";
 import { getVariant } from "../../services/api";
 
-export const VariantEdit = () => {
+export const VariantDelete = () => {
 
     const [variant, setVariant] = useState<IVariant>();
     const { id } = useParams();
@@ -16,6 +16,6 @@ export const VariantEdit = () => {
     }, [])
 
     return <>
-        {variant && <VariantCreate Variant={variant} isEdit={true} /> }
+        {variant && <VariantCreate Variant={variant} isDelete={true} /> }
     </>
 }

@@ -1,5 +1,5 @@
 import { Box, Button, Collapse, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { GetIcon } from "../../helpers/GetIcons";
@@ -7,6 +7,8 @@ import { NavigateTo } from "../../services/Navigate";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { NotificationsActions } from "../../store/Notifications";
+import { IVariant } from "../../models/IVariant";
+import { getVariants } from "../../services/api";
 
 
 export const VariantList = () => {
@@ -17,37 +19,15 @@ export const VariantList = () => {
    
     var navigate = useNavigate();
     var dispatch = useDispatch();
+    const [variants, setVariants] = useState<IVariant[]>([]);
 
     useEffect(() => {
         dispatch(NotificationsActions.setHeaderMessage( "VARIANTS" ));
-      });
 
-
-    function createData(
-        id: number,
-        name: string,
-        published: boolean,
-      ) {
-        return {
-          id,
-          name,
-          published,
-          history: [
-            {
-              date: '2020-01-05',
-              customerId: '11091700',
-              amount: 3,
-            },
-            {
-              date: '2020-01-02',
-              customerId: 'Anonymous',
-              amount: 1,
-            },
-          ],
-        };
-      }
+        getVariants().then((variants: IVariant[]) => setVariants(variants))
+    }, []);
       
-      function Row(props: { row: ReturnType<typeof createData> }) {
+    function Row(props: { row: IVariant }) {
         const { row } = props;
         const [open, setOpen] = React.useState(false);
       
@@ -67,21 +47,21 @@ export const VariantList = () => {
                 {row.name}
               </TableCell>
               <TableCell >
-                <Switch defaultChecked={row.published} />
+                <Switch defaultChecked={row.isPublished} />
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.VarinatsEdit(navigate, row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.VarinatsView(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.VarinatsEdit(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.VarinatsDelete(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>
@@ -95,7 +75,7 @@ export const VariantList = () => {
               <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                   <Box sx={{ margin: 1 }}>
-                    <Typography variant="h6" gutterBottom component="div">
+                    {/* <Typography variant="h6" gutterBottom component="div">
                       History
                     </Typography>
                     <Table size="small" aria-label="purchases">
@@ -117,19 +97,14 @@ export const VariantList = () => {
                           </TableRow>
                         ))}
                       </TableBody>
-                    </Table>
+                    </Table> */}
                   </Box>
                 </Collapse>
               </TableCell>
             </TableRow>
           </React.Fragment>
         );
-      }
-      const rows = [
-        createData(1, 'Size', true),
-        createData(2, 'Color', true),
-        createData(3, 'Weight', true)
-      ];
+    }
 
     return <>
         <article className={clsContainer}>
@@ -140,7 +115,6 @@ export const VariantList = () => {
                 </Button>
             </section>
             <section className={clsChild}>
-                {/* <TableContainer component={Paper}> */}
                     <Table aria-label="collapsible table">
                         <TableHead>
                         <TableRow>
@@ -156,7 +130,7 @@ export const VariantList = () => {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {rows.map((row) => (
+                        {variants.map((row) => (
                             <Row key={row.name} row={row} />
                         ))}
                         </TableBody>
@@ -164,14 +138,13 @@ export const VariantList = () => {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={rows.length}
+                        count={variants.length}
                         rowsPerPage={10}
-                        page={1}
+                        page={0}
                         onPageChange={() => {}}
                         // onRowsPerPageChange={handleChangeRowsPerPage}
         />
-                {/* </TableContainer> */}
-            </section>
+                     </section>
         </article>
     </>
 }

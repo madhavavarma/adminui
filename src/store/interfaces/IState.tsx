@@ -1,7 +1,9 @@
 import { IFlags } from "./IFlags";
 import { INotifications } from "./INotifications";
+import { IVariantState } from "./IVariantState";
 
 export interface IState {
     Notifications: INotifications,
-    Flags: IFlags
+    Flags: IFlags,
+    VariantState: IVariantState
 }

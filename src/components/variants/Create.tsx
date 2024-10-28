@@ -2,75 +2,67 @@ import { Button, Drawer, FormControlLabel, Switch, TextField } from "@mui/materi
 import { Card } from "../../basecomponents/Card"
 import { useEffect, useState } from "react";
 import { MainAlert } from "../../basecomponents/MainAlert";
-import { useDispatch } from "react-redux";
-import { NotificationsActions } from "../../store/Notifications";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { NavigateTo } from "../../services/Navigate";
 import { IVariant } from "../../models/IVariant";
 import OptionsList from "./options/List";
 import { OptionCreate } from "./options/Create";
-import { IOption } from "../../models/IOption";
+import { IState } from "../../store/interfaces/IState";
+import { VariantStateActions } from "../../store/Variant";
+import { getVariant } from "../../services/api";
 
-interface IProps {
-    Variant?: IVariant,
-    isEdit?: boolean,
-    isDelete?: boolean,
-    isView?: boolean
-  }
-
-export const VariantCreate = (props: IProps) => {
+export const VariantCreate = () => {
 
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
     const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
 
     const dispatch = useDispatch();
     var navigate = useNavigate();
+    var state = useSelector((state: IState) => state.VariantState);
 
-
-    const [Variant, setVariant] = useState<IVariant>();
-    const [name, setName] = useState(Variant?.name);
-    const [isPublished, setIsPublished] = useState(Variant?.isPublished || false);
-    const [showSubCatDrawer, setShowSubCatDrawer] = useState(false);
+    const [name, setName] = useState(state.variant?.name);
+    const [isPublished, setIsPublished] = useState(state.variant?.isPublished || false);
     const [show, setShow] = useState(false);
-    const [isCreate, setIsCreate] = useState(false);
+    var params = useParams();
+
+    const getMode = (mode: string) => {
+        switch(mode) {
+            case 'edit': return 'E';
+            case 'create': return 'C';
+            case 'view': return 'V';
+            case 'delete': return 'D';
+            default: return "";
+        }
+    }
 
     useEffect(() => {
-        dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT Variant" : "ADD Variant"));
+        var mode = getMode(params?.mode || "");
+        dispatch(VariantStateActions.setMode(mode));
 
-        setIsCreate(!props.isEdit && !props.isDelete && !props.isView);
-
-        if(props.Variant) {
-            setVariant(props.Variant);
-            setName(props.Variant.name);
-            setIsPublished(props.Variant.isPublished);
+        if(params.id) {
+            getVariant(+params.id).then((variant: IVariant) => {
+                dispatch(VariantStateActions.setVariant(variant));
+                setName(variant?.name);
+                setIsPublished(variant?.isPublished || false);
+                setShow(true);
+            })
         }
-
-        setShow(true);
     }, []);
 
+    useEffect(() => {
+        dispatch(VariantStateActions.updateVariant({name, isPublished}));
+    }, [name, isPublished, state.variant])
+
     const create = () => {
-
-        var Variant = {
-            name,
-            isPublished,
-        }
-
-        console.log(Variant);
-
-        NavigateTo.VariantsCreate(navigate);
-    }
-
-    const cancelOption = () => {
-        setShowSubCatDrawer(false);
-    }
-
-    const addOption = (option: IOption) => {
-        if(props.Variant) {
-            option.id = (0 - props.Variant.options.filter(x => (x.id || 0) < 1).length);
-            option.variantId = props.Variant.id;
-            props.Variant.options.push(option);
-        }
         
+        console.log(state.variant);
+        // NavigateTo.VariantsCreate(navigate);
+    }
+
+    const createOption = () => {
+        dispatch(VariantStateActions.setDefaultOption());
+        dispatch(VariantStateActions.setOptionsMode("C"));
     }
 
     return <>
@@ -78,7 +70,7 @@ export const VariantCreate = (props: IProps) => {
              <MainAlert message="Fields marked with (*) are mandatory" />
             <Card card= { {cardHeader: "Variant Information"}}>
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                    <TextField id="name" required label="Variant Name" disabled={props.isView || props.isDelete} variant="outlined" size="small" value={name} onChange={(e: any) => setName(e.target.value)}/>
+                    <TextField id="name" required label="Variant Name" disabled={["V", "D"].includes(state.mode)} variant="outlined" size="small" value={name} onChange={(e: any) => setName(e.target.value)}/>
                     <span className="">
                         <FormControlLabel label= "Is Published" control= {
                         <Switch checked={isPublished} onChange={(e: any) => setIsPublished(e.target.checked)}/> } />
@@ -89,26 +81,26 @@ export const VariantCreate = (props: IProps) => {
             <section className={clsContainer}>
                 <section className={clsHeader}>
                     <h6> Options </h6>
-                    {(props.isEdit || isCreate ) && <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => {setShowSubCatDrawer(true)}}>
+                    {(state.mode === "E" || state.mode === "C" ) && <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => {createOption()}}>
                     <span className="text-gray-100 font-bold tracking-wider">Add Options</span>
                     </Button>}
                 </section>
-                <OptionsList options={Variant?.options || []} isEdit={props.isEdit || false}/>
+                <OptionsList/>
             </section>
             <Card card= { {cardHeader: ""}}>
                 <section className="grid grid-cols-2 gap-8 rounded-lg">
                     <Button variant="outlined" onClick={() => NavigateTo.Variants(navigate)}>Cancel</Button>
-                    {isCreate && <Button variant="contained" className="" onClick={() => create()}>Create</Button>}
-                    {props.isEdit && <Button variant="contained" className="" onClick={() => create()}>Update</Button>}
-                    {props.isDelete && <Button variant="contained" className="" onClick={() => {}}>Delete</Button>}
-                    {props.isView && <Button variant="contained" className="" onClick={() => NavigateTo.Variants(navigate)}>Ok</Button>}
+                    {state.mode === "C" && <Button variant="contained" className="" onClick={() => create()}>Create</Button>}
+                    {state.mode === "E" && <Button variant="contained" className="" onClick={() => create()}>Update</Button>}
+                    {state.mode === "D" && <Button variant="contained" className="" onClick={() => {}}>Delete</Button>}
+                    {state.mode === "V" && <Button variant="contained" className="" onClick={() => NavigateTo.Variants(navigate)}>Ok</Button>}
                 </section>
             </Card>
 
-            <Drawer open={showSubCatDrawer} onClose={() => {setShowSubCatDrawer(false)}} className="w-full" anchor={"right"} PaperProps={{
+            <Drawer open={state.optionsMode === "C"} className="w-full" anchor={"right"} PaperProps={{
             sx: {backgroundColor: "rgb(249, 247, 247)", width: "300px"} }}>
                 <Card card= { {cardHeader: "Add Options"}}>
-                    <OptionCreate cancel={cancelOption} isCreate={true} addOption= {addOption}/>
+                    <OptionCreate/>
                 </Card>
             </Drawer>
         </article>}

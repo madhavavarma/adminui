@@ -11,9 +11,6 @@ import { CategoryEdit } from "./components/categories/Edit";
 import { TagsList } from "./components/tags/List";
 import { VariantCreate } from "./components/variants/Create";
 import { VariantList } from "./components/variants/List";
-import { VariantEdit } from "./components/variants/Edit";
-import { VariantView } from "./components/variants/View";
-import { VariantDelete } from "./components/variants/Delete";
 
 
 
@@ -37,10 +34,7 @@ export default function Routing() {
                     <Route path="/categories/list" element={ <FluidContainer><CategoryList /></FluidContainer>}></Route>
 
                     {/* Variants */}
-                    <Route path="/variants/create" element={ <FluidContainer><VariantCreate /></FluidContainer>}></Route>
-                    <Route path="/variants/edit/:id" element={ <FluidContainer><VariantEdit /></FluidContainer>}></Route>
-                    <Route path="/variants/view/:id" element={ <FluidContainer><VariantView /></FluidContainer>}></Route>
-                    <Route path="/variants/delete/:id" element={ <FluidContainer><VariantDelete /></FluidContainer>}></Route>
+                    <Route path="/variants/:mode/:id" element={ <FluidContainer><VariantCreate /></FluidContainer>}></Route>
                     <Route path="/variants/list" element={ <FluidContainer><VariantList /></FluidContainer>}></Route>
 
                     {/* Tags */}

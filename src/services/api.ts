@@ -33,7 +33,7 @@ export const getVariant = async (id: number) => {
         return (await axios.get<IVariant>('/adminui/json/variant.json')).data;
     }
     else {
-        return (await axios.get<IVariant>('/adminui/variant.json')).data;
+        return (await axios.get<IVariant>('/adminui/variant.json' + id)).data;
     }   
 
 }

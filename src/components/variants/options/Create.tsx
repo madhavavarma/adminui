@@ -1,89 +1,62 @@
 import {  Button, FormControlLabel, Switch, TextField } from "@mui/material"
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { NotificationsActions } from "../../../store/Notifications";
+import { useDispatch, useSelector } from "react-redux";
 import { IOption } from "../../../models/IOption";
+import { IState } from "../../../store/interfaces/IState";
+import { VariantStateActions } from "../../../store/Variant";
 
-interface IProps {
-    option?: IOption,
-    isEdit?: boolean,
-    isView?: boolean,
-    isDelete?: boolean,
-    isCreate?: boolean,
-    cancel: () => void,
-    updateOption?: (option: IOption) => void,
-    deleteOption?: (option: IOption) => void,
-    addOption?: (option: IOption) => void,
-  }
-
-export const OptionCreate = (props: IProps) => {
+export const OptionCreate = () => {
 
     var dispatch = useDispatch();
+    var state = useSelector((state: IState) => state.VariantState)
 
-    const [option, setOption] = useState<IOption | null>(props.option || null);
+    const [option] = useState<IOption>(state.option);
     const [name, setName] = useState(option?.name);
     const [isPublished, setIsPublished] = useState(option?.isPublished || false);
     const [show, setShow] = useState(true);
 
     useEffect(() => {
-        dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT OPTION" : "ADD OPTION"));
-
-        console.log(props.option)
-
-        if(props.option) {
-            setOption(props.option);
-            setName(props.option.name);
-            setIsPublished(props.option.isPublished);
-        }
-
+        setName(option.name);
+        setIsPublished(option.isPublished);
         setShow(true);
     }, []);
 
     const update = () => {
-        if(props.updateOption && props.option) {
-            props.option.name = name || "";
-            props.option.isPublished = isPublished;
-            props.updateOption(props.option);
-            props.cancel();
-        }
+        dispatch(VariantStateActions.updateOption({id: option.id, name, isPublished}));
+        close();
     }
 
     const deleteOption = () => {
-
-        if(props.deleteOption && props.option)
-        props.deleteOption(props.option);
-        props.cancel();
+        dispatch(VariantStateActions.deleteOption(option));
+        close();
     }
 
     const addOption = () => {
-        if(props.addOption) {
-            var option: IOption = {
-                name: name || "",
-                isPublished: isPublished
-            }
+        dispatch(VariantStateActions.addOption({name, isPublished}));
+        close();
+    }
 
-            props.addOption(option)
-            props.cancel();
-        }
+    const close = () => {
+        dispatch(VariantStateActions.setOptionsMode(""))
     }
 
 
     return <>
         {show && <article>
                 <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mb-8">
-                    <TextField id="name" disabled={props.isView || props.isDelete} required label="Option Name" variant="outlined" size="small" value={name} onChange={(e: any) => setName(e.target.value)}/>
+                    <TextField id="name" disabled={["V", "D"].includes(state.optionsMode)} required label="Option Name" variant="outlined" size="small" value={name} onChange={(e: any) => setName(e.target.value)}/>
                     <span className="">
                         <FormControlLabel label= "Is Published" control= {
-                        <Switch checked={isPublished} onChange={(e: any) => setIsPublished(e.target.checked)}/> } disabled={props.isView || props.isDelete} />
+                        <Switch checked={isPublished} onChange={(e: any) => setIsPublished(e.target.checked)}/> } disabled={['V', 'D'].includes(state.optionsMode)} />
                     </span>
                 </section>
 
                 <section className="grid grid-cols-2 gap-2 rounded-lg mt-8">
-                    <Button variant="outlined" onClick={() => props.cancel()}>Cancel</Button>
-                    {props.isEdit && <Button variant="contained" className="" onClick={() => update()}>Update</Button>}
-                    {props.isCreate && <Button variant="contained" className="" onClick={() => addOption()}>Create</Button>}
-                    {props.isView && <Button variant="contained" className="" onClick={() => {}}>Ok</Button>}
-                    {props.isDelete && <Button variant="contained" className="" onClick={() => deleteOption()}>Delete</Button>}
+                    <Button variant="outlined" onClick={() => close()}>Cancel</Button>
+                    {state.optionsMode === "E" && <Button variant="contained" className="" onClick={() => update()}>Update</Button>}
+                    {state.optionsMode === "C" && <Button variant="contained" className="" onClick={() => addOption()}>Create</Button>}
+                    {state.optionsMode === "V" && <Button variant="contained" className="" onClick={() => close()}>Ok</Button>}
+                    {state.optionsMode === "D" && <Button variant="contained" className="" onClick={() => deleteOption()}>Delete</Button>}
                 </section>
         </article>}
     </>

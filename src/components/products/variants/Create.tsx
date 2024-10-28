@@ -36,7 +36,7 @@ export const ProductVariantCreate = (props: IProps) => {
     const handleVariantChange = (event: any) => {
         const variantId = event.target.value as number;
         const variant = variants.find(variant => variant.id === variantId) || null;
-        setRows(variant?.options?.map(options => createData(options.id, options.name, false)));
+        setRows(variant?.options?.map(options => createData(options.id || 0, options.name, false)));
         setSelectedVariant(variant);
     };
 
@@ -49,7 +49,7 @@ export const ProductVariantCreate = (props: IProps) => {
             setSelectedVariant(props?.variant)
         }
 
-        setRows(props.variant?.options?.map(options => createData(options.id, options.name, options.isPublished)));
+        setRows(props.variant?.options?.map(options => createData(options.id || 0, options.name, options.isPublished)));
 
 
         setShow(true);

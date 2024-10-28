@@ -1,56 +1,26 @@
 import {Drawer, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { GetIcon } from "../../../helpers/GetIcons";
 import { Card } from "../../../basecomponents/Card";
 import { IOption } from "../../../models/IOption";
-import { OptionEdit } from "./Edit";
-import { OptionView } from "./View";
-import { OptionDelete } from "./Delete";
-
-interface IProps {
-  options: IOption[],
-  isEdit: boolean
-}
+import { useDispatch, useSelector } from "react-redux";
+import { IState } from "../../../store/interfaces/IState";
+import { VariantStateActions } from "../../../store/Variant";
+import { OptionCreate } from "./Create";
 
 
-const OptionsList = (props: IProps) => {
+const OptionsList = () => {
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
     const clsChild = "font-Play font-medium overflow-scroll";
+    
+    const dispatch = useDispatch();
+    const state = useSelector((state: IState) => state.VariantState);
 
-    const [editOption, setEditOption] = useState<number | null>(null);
-    const [viewOption, setViewOption] = useState<number | null>(null);
-    const [deleteOption, setDeleteOption] = useState<number | null>(null);
-    const [options, setOptions] = useState<IOption[]>();
-
-    useEffect(() => {
-      console.log(props.options)
-      setOptions(props.options);
-    }, []);
-
-    const cancel = () => {
-      setEditOption(null);
-      setViewOption(null);
-      setDeleteOption(null);
-    }
-
-    const updateOption = (option: IOption) => {
-      var updateOption = options?.find(opt => opt.id === option.id);
-
-      if(updateOption) {
-        updateOption.isPublished = option.isPublished;
-        updateOption.name = option.name;
-
-        setOptions(options);
-      }
-    }
-
-    const delOption = (option: IOption) => {
-      if(options) {
-        var newOptions = options.filter(opt => opt.id != option.id);
-        setOptions(newOptions);
-      }
+    const setOptionMode = (mode: string, editOption: IOption) => {
+      dispatch(VariantStateActions.setOptionsMode(mode));
+      dispatch(VariantStateActions.setEditOption(editOption));
     }
       
 
@@ -78,17 +48,17 @@ const OptionsList = (props: IProps) => {
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => setViewOption(option.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => setOptionMode("V", option)}>
                         <IconButton aria-label="Example">
                           {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
-                    {props.isEdit && <span className="bg-btn-icon-color-dull rounded" onClick={() => setEditOption(option.id)}>
+                    {state.mode === "E" && <span className="bg-btn-icon-color-dull rounded" onClick={() => setOptionMode("E", option)}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span> }
-                    {props.isEdit && <span className="bg-btn-icon-color-dull rounded" onClick={() => setDeleteOption(option.id)}>
+                    {state.mode === "E"  && <span className="bg-btn-icon-color-dull rounded" onClick={() =>setOptionMode("D", option)}>
                         <IconButton aria-label="Example">
                           {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>
@@ -119,7 +89,7 @@ const OptionsList = (props: IProps) => {
                         </TableRow>
                   </TableHead>
                         <TableBody>
-                          {options?.map((option) => (
+                          {state.variant.options.map((option) => (
                               <Row key={option.id} option={option} />
                           ))}
                         </TableBody>
@@ -127,31 +97,20 @@ const OptionsList = (props: IProps) => {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={options?.length || 0}
+                    count={state.variant.options.length || 0}
                     rowsPerPage={10}
                     page={0}
                     onPageChange={() => {}}
                 />
             </section>
 
-            <Drawer open={editOption != null} onClose={() => {setEditOption(null)}} className="w-full" anchor={"right"} PaperProps={{
+            <Drawer open={['E', 'D', 'V'].includes(state.optionsMode)} className="w-full" anchor={"right"} PaperProps={{
             sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
                 <Card card= { {cardHeader: "Edit Option"}}>
-                    <OptionEdit option={options?.find(option => option.id === editOption)} cancel={cancel} updateOption={updateOption}/>
+                    <OptionCreate />
                 </Card>
             </Drawer>
-            <Drawer open={viewOption != null} onClose={() => {setViewOption(null)}} className="w-full" anchor={"right"} PaperProps={{
-            sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
-                <Card card= { {cardHeader: "View Option"}}>
-                    <OptionView option={options?.find(option => option.id === viewOption)} cancel={cancel}/>
-                </Card>
-            </Drawer>
-            <Drawer open={deleteOption != null} onClose={() => {setDeleteOption(null)}} className="w-full" anchor={"right"} PaperProps={{
-            sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
-                <Card card= { {cardHeader: "Delete Option"}}>
-                    <OptionDelete option={options?.find(option => option.id === deleteOption)} cancel={cancel} deleteOption={delOption}/>
-                </Card>
-            </Drawer>
+            
         </article>
     </>
 }

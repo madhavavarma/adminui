@@ -5,16 +5,29 @@ import { IVariant } from "../models/IVariant";
 
 export const isMock = true;
 
-export const getTags = async () => {
+export const getCategories = async () => {
 
     if(isMock) {
-        return (await axios.get<ITag[]>('/adminui/json/tags.json')).data;
+        return (await axios.get<IVariant[]>('/adminui/json/categories.json')).data;
     }
     else {
-        return (await axios.get<ITag[]>('/adminui/tags.json')).data;
+        return (await axios.get<IVariant[]>('/adminui/categories.json')).data;
     }   
 
 }
+
+export const getCategory = async (id: number) => {
+
+    if(isMock) {
+        return (await axios.get<IVariant>('/adminui/json/category.json')).data;
+    }
+    else {
+        return (await axios.get<IVariant>('/adminui/category.json' + id)).data;
+    }   
+
+}
+
+
 
 export const getVariants = async () => {
 
@@ -34,6 +47,17 @@ export const getVariant = async (id: number) => {
     }
     else {
         return (await axios.get<IVariant>('/adminui/variant.json' + id)).data;
+    }   
+
+}
+
+export const getTags = async () => {
+
+    if(isMock) {
+        return (await axios.get<ITag[]>('/adminui/json/tags.json')).data;
+    }
+    else {
+        return (await axios.get<ITag[]>('/adminui/tags.json')).data;
     }   
 
 }

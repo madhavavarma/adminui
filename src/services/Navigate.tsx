@@ -35,6 +35,14 @@ export  class  NavigateTo  {
         navigate("/categories/edit/" +id)
     }
 
+    static CaregoriesView = (navigate: NavigateFunction, id: number) => {
+        navigate("/categories/view/" +id)
+    }
+
+    static CaregoriesDelete = (navigate: NavigateFunction, id: number) => {
+        navigate("/categories/delete/" +id)
+    }
+
     // Variants
     static Variants = (navigate: NavigateFunction) => {
         navigate("/variants/list")

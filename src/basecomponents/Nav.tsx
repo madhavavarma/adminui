@@ -67,7 +67,7 @@ export const Nav = () => {
 
                 {/* Nav List */}
                 <section className={clsNavListContainer}>
-                    {navList.map( (nav: INav) => <ul className="flex flex-col mb-6 font-Play">
+                    {navList.map( (nav: INav) => <ul key={nav.id} className="flex flex-col mb-6 font-Play">
 
                         {/* Menu Header */}
                         <li className={clsMenuHeader}>
@@ -75,7 +75,7 @@ export const Nav = () => {
                         </li>
 
                         {nav.children?.map( (navC1: INav) =>  
-                        <li  >
+                        <li  key={navC1.id}>
                             <a onClick={() => {setL2Active(navC1)} } type="button" className= {"flex justify-between align-center cursor-pointer border-l-4 border-solid border-transparent " + (navC1.isActive ? "border-primary-color" : "")}>
                                 {/* Parent Nav */}
                                 <span className={clsParentNav + (navC1.isActive ? " text-main-nav-item-hover-color" : "")}>

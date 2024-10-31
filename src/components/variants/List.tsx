@@ -27,8 +27,8 @@ export const VariantList = () => {
         getVariants().then((variants: IVariant[]) => setVariants(variants))
     }, []);
       
-    function Row(props: { row: IVariant }) {
-        const { row } = props;
+    function Row(props: { variant: IVariant }) {
+        const { variant: row } = props;
         const [open, setOpen] = React.useState(false);
       
         return (
@@ -131,7 +131,7 @@ export const VariantList = () => {
                         </TableHead>
                         <TableBody>
                         {variants.map((row) => (
-                            <Row key={row.name} row={row} />
+                            <Row key={row.name} variant={row} />
                         ))}
                         </TableBody>
                     </Table>

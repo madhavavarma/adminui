@@ -8,14 +8,14 @@ export const Layout = () => {
 
   const clsLayoutArticle = "font-HankenG font-bold h-full bg-bg-light dark:bg-bg-dark";
 
-  const state = useSelector((state: IState) => state);
+  const flagsState = useSelector((state: IState) => state.Flags);
 
   return (
     <>
-     <article className={clsLayoutArticle + (state.Flags.darkMode ? " dark" : "")}>
+     <article className={clsLayoutArticle + (flagsState.darkMode ? " dark" : "")}>
       <Header />      
       <Nav />
-      {state.Flags.darkMode}
+      {flagsState.darkMode}
       <section className="z-02">
         <Outlet />
       </section>

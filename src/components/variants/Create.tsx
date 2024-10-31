@@ -11,6 +11,7 @@ import { OptionCreate } from "./options/Create";
 import { IState } from "../../store/interfaces/IState";
 import { VariantStateActions } from "../../store/Variant";
 import { getVariant } from "../../services/api";
+import { getMode } from "../../helpers/CommonFunctions";
 
 export const VariantCreate = () => {
 
@@ -26,15 +27,7 @@ export const VariantCreate = () => {
     const [show, setShow] = useState(false);
     var params = useParams();
 
-    const getMode = (mode: string) => {
-        switch(mode) {
-            case 'edit': return 'E';
-            case 'create': return 'C';
-            case 'view': return 'V';
-            case 'delete': return 'D';
-            default: return "";
-        }
-    }
+    
 
     useEffect(() => {
         var mode = getMode(params?.mode || "");

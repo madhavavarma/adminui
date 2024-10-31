@@ -1,5 +1,5 @@
 import { Box, Button, Collapse, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { GetIcon } from "../../helpers/GetIcons";
@@ -7,6 +7,8 @@ import { NavigateTo } from "../../services/Navigate";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { NotificationsActions } from "../../store/Notifications";
+import { ICategory } from "../../models/ICategory";
+import { getCategories } from "../../services/api";
 
 
 export const CategoryList = () => {
@@ -17,38 +19,19 @@ export const CategoryList = () => {
    
     var navigate = useNavigate();
     var dispatch = useDispatch();
+    const [categories, setCategories] = useState<ICategory[]>([]);
 
     useEffect(() => {
         dispatch(NotificationsActions.setHeaderMessage( "CATEGORIES" ));
-      });
+
+        getCategories().then((categories: ICategory[]) => setCategories(categories))
+      }, []);
 
 
-    function createData(
-        id: number,
-        name: string,
-        published: boolean,
-      ) {
-        return {
-          id,
-          name,
-          published,
-          history: [
-            {
-              date: '2020-01-05',
-              customerId: '11091700',
-              amount: 3,
-            },
-            {
-              date: '2020-01-02',
-              customerId: 'Anonymous',
-              amount: 1,
-            },
-          ],
-        };
-      }
+ 
       
-      function Row(props: { row: ReturnType<typeof createData> }) {
-        const { row } = props;
+      function Row(props: { category: ICategory }) {
+        const { category: row } = props;
         const [open, setOpen] = React.useState(false);
       
         return (
@@ -67,29 +50,27 @@ export const CategoryList = () => {
                 {row.name}
               </TableCell>
               <TableCell >
-                <Switch defaultChecked={row.published} />
+                <Switch defaultChecked={row.isPublished} />
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.CaregoriesEdit(navigate, row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.CaregoriesView(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.CaregoriesEdit(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.CaregoriesDelete(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>
                     </span>
                 </section>                
-             </TableCell>
-
-             
+             </TableCell>             
             </TableRow>
             <TableRow>
               <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -98,26 +79,7 @@ export const CategoryList = () => {
                     <Typography variant="h6" gutterBottom component="div">
                       History
                     </Typography>
-                    <Table size="small" aria-label="purchases">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Date</TableCell>
-                          <TableCell>Customer</TableCell>
-                          <TableCell >Amount</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {row.history.map((historyRow) => (
-                          <TableRow key={historyRow.date}>
-                            <TableCell component="th" scope="row">
-                              {historyRow.date}
-                            </TableCell>
-                            <TableCell>{historyRow.customerId}</TableCell>
-                            <TableCell >{historyRow.amount}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                   
                   </Box>
                 </Collapse>
               </TableCell>
@@ -125,12 +87,7 @@ export const CategoryList = () => {
           </React.Fragment>
         );
       }
-      const rows = [
-        createData(1, 'Vegetables', true),
-        createData(2, 'Fruits', true),
-        createData(3, 'Dairy', true)
-      ];
-
+      
     return <>
         <article className={clsContainer}>
             <section className={clsHeader}>
@@ -156,17 +113,17 @@ export const CategoryList = () => {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {rows.map((row) => (
-                            <Row key={row.name} row={row} />
+                        {categories.map((category: ICategory) => (
+                            <Row key={category.name} category={category} />
                         ))}
                         </TableBody>
                     </Table>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={rows.length}
+                        count={categories.length}
                         rowsPerPage={10}
-                        page={1}
+                        page={0}
                         onPageChange={() => {}}
                         // onRowsPerPageChange={handleChangeRowsPerPage}
         />

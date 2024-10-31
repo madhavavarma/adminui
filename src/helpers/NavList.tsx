@@ -8,7 +8,7 @@ export const NavList : INav[] = [
             {id: 5, name: "Create", navigateTo: "/products/create", isActive: false},
             {id: 6, name: "Edit", navigateTo: "/products/edit", isActive: false},
         ]},
-        {id: 7, name: "categories", iconName: "Category", navigateTo: "/categories/list", isActive: false, children: [
+        {id: 7, name: "Categories", iconName: "Category", navigateTo: "/categories/list", isActive: false, children: [
             {id: 8, name: "List", navigateTo: "/categories/list", isActive: false},
             {id: 9, name: "Create", navigateTo: "/categories/create", isActive: false},
             {id: 10, name: "Edit", navigateTo: "/categories/edit", isActive: false},

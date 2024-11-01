@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "name": "Tomato",
+        "image": "",
+        "description": "Good For Health",
+    
+        "isPublished": true,
+        
+        "price": 30,
+        "discount": 0,
+        "tax": 0
+    },    
+    {
+        "id": 2,
+        "name": "Brinjal",
+        "image": "",
+        "description": "Good For Health",
+    
+        "isPublished": true,
+        
+        "price": 40,
+        "discount": 0,
+        "tax": 0
+    },
+    {
+        "id": 3,
+        "name": "Coconut",
+        "image": "",
+        "description": "Good For Health",
+    
+        "isPublished": true,
+        
+        "price": 30,
+        "discount": 0,
+        "tax": 0
+    },
+    {
+        "id": 4,
+        "name": "Ladies Finger",
+        "image": "",
+        "description": "Good For Health",
+    
+        "isPublished": true,
+        
+        "price": 30,
+        "discount": 0,
+        "tax": 0
+    },
+    {
+        "id": 5,
+        "name": "Onions",
+        "image": "",
+        "description": "Good For Health",
+    
+        "isPublished": true,
+        
+        "price": 50,
+        "discount": 0,
+        "tax": 0
+    }
+]

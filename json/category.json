@@ -1,0 +1,10 @@
+{
+    "name": "Vegetables",
+    "id": 1,
+    "isPublished": true,
+    "image": "",
+    "subCategories" : [
+        {"name": "Leafy", "id": 1, "isPublished": true, "subCategories": [{"id": 1, "name": "Amaranthus", "isPublished": true}]},
+        {"name": "Root", "id": 2, "isPublished": true}
+    ]
+}

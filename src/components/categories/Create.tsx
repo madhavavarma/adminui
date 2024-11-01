@@ -3,7 +3,6 @@ import { Card } from "../../basecomponents/Card"
 import { useEffect, useState } from "react";
 import { MainAlert } from "../../basecomponents/MainAlert";
 import { useDispatch, useSelector } from "react-redux";
-import { NotificationsActions } from "../../store/Notifications";
 import { useNavigate, useParams } from "react-router-dom";
 import { NavigateTo } from "../../services/Navigate";
 import { ICategory } from "../../models/ICategory";

@@ -21,6 +21,14 @@ export  class  NavigateTo  {
         navigate("/products/edit/" +id)
     }
 
+    static ProductsView = (navigate: NavigateFunction, id: number) => {
+        navigate("/products/view/" +id)
+    }
+
+    static ProductsDelete = (navigate: NavigateFunction, id: number) => {
+        navigate("/products/delete/" +id)
+    }
+
 
     // Categories
     static Categories = (navigate: NavigateFunction) => {

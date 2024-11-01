@@ -1,12 +1,11 @@
-import { Box, Button, Collapse, Divider, FormControlLabel, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TextField, Typography } from "@mui/material"
+import { Button, Divider, FormControlLabel, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TextField } from "@mui/material"
 import { ICategory } from "../../../models/ICategory";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NotificationsActions } from "../../../store/Notifications";
-import React from "react";
 import { GetIcon } from "../../../helpers/GetIcons";
 import { IState } from "../../../store/interfaces/IState";
 import { CategoryStateActions } from "../../../store/Category";
+import React from "react";
 
 export const SubCategoryCreate = () => {
 

@@ -1,9 +1,32 @@
 import axios from "axios";
 import { ITag } from "../models/ITag";
 import { IVariant } from "../models/IVariant";
+import { IProduct } from "../models/IProduct";
 
 
 export const isMock = true;
+
+export const getProducts = async () => {
+
+    if(isMock) {
+        return (await axios.get<IProduct[]>('/adminui/json/products.json')).data;
+    }
+    else {
+        return (await axios.get<IProduct[]>('/adminui/products.json')).data;
+    }   
+
+}
+
+export const getProduct = async () => {
+
+    if(isMock) {
+        return (await axios.get<IProduct>('/adminui/json/product.json')).data;
+    }
+    else {
+        return (await axios.get<IProduct>('/adminui/product.json')).data;
+    }   
+
+}
 
 export const getCategories = async () => {
 

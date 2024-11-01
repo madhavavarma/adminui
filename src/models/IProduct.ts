@@ -1,3 +1,5 @@
+import { ITag } from "./ITag";
+
 export interface IProduct {
     id: number,
     name: string,
@@ -8,5 +10,33 @@ export interface IProduct {
     
     price: number,
     discount: number,
-    tax: number
+    tax: number, 
+
+    productVariants: IProductVariant[],
+    productCategories: IProductCategories[],
+    productTags: ITag[]
 }
+
+export interface IProductVariant {
+    productId: number,
+    variantId: number,
+    options: IProductVariantOption[]
+}
+
+export interface IProductVariantOption {
+    optionId: number,
+    price: number
+}
+
+export interface IProductCategories {
+    productId: number,
+    categoryId: number,
+    subCategoryId: number,
+    miniCategoryId: number
+}
+
+export interface IProductTag {
+    productId: number;
+    tagId: number;
+}
+

@@ -1,0 +1,16 @@
+{
+    "id": 1,
+    "name": "Tomato",
+    "image": "",
+    "description": "Good For Health",
+
+    "isPublished": true,
+    
+    "price": 30,
+    "discount": 0,
+    "tax": 0,
+
+    "productVariants": [
+        {"productId": 1, "variantId": 1, "options": [ {"optionId": 2, "price": 30 } ]}
+    ]
+}

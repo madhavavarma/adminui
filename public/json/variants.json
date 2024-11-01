@@ -1,6 +1,6 @@
 [
     {
-        "id": "1",
+        "id": 1,
         "name": "Size",
         "isPublished": true,
         "options": [
@@ -10,7 +10,7 @@
         ]
     },
     {
-        "id": "2",
+        "id": 2,
         "name": "Color",
         "isPublished": true,
         "options": [

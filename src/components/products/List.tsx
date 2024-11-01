@@ -1,5 +1,5 @@
 import { Box, Button, Collapse, IconButton, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { GetIcon } from "../../helpers/GetIcons";
@@ -7,6 +7,8 @@ import { NavigateTo } from "../../services/Navigate";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { NotificationsActions } from "../../store/Notifications";
+import { IProduct } from "../../models/IProduct";
+import { getProducts } from "../../services/api";
 
 
 export const ProductList = () => {
@@ -16,40 +18,15 @@ export const ProductList = () => {
 
     var navigate = useNavigate();
     var dispatch = useDispatch();
+    const [products, setProducts] = useState<IProduct[]>([]);
 
     useEffect(() => {
       dispatch(NotificationsActions.setHeaderMessage( "PRODUCTS" ));
-    });      
+       getProducts().then((products: IProduct[]) => setProducts(products))
+    }, []);      
 
-
-    function createData(
-        id: number,
-        name: string,
-        price: number,
-        published: boolean,
-      ) {
-        return {
-          id,
-          name,
-          price,
-          published,
-          history: [
-            {
-              date: '2020-01-05',
-              customerId: '11091700',
-              amount: 3,
-            },
-            {
-              date: '2020-01-02',
-              customerId: 'Anonymous',
-              amount: 1,
-            },
-          ],
-        };
-      }
-      
-      function Row(props: { row: ReturnType<typeof createData> }) {
-        const { row } = props;
+      function Row(props: { product: IProduct }) {
+        const { product: product } = props;
         const [open, setOpen] = React.useState(false);
       
         return (
@@ -65,25 +42,25 @@ export const ProductList = () => {
                 </IconButton>
               </TableCell>
               <TableCell component="th" scope="row">
-                {row.name}
+                {product.name}
               </TableCell>
-              <TableCell >{row.price}</TableCell>
+              <TableCell >{product.price}</TableCell>
               <TableCell >
-                <Switch defaultChecked={row.published} />
+                <Switch defaultChecked={product.isPublished} />
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsEdit(navigate, row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsView(navigate, product.id)}>
                         <IconButton aria-label="Example">
                           {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsEdit(navigate, product.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsDelete(navigate, product.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>
@@ -100,30 +77,7 @@ export const ProductList = () => {
                     <Typography variant="h6" gutterBottom component="div">
                       History
                     </Typography>
-                    <Table size="small" aria-label="purchases">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Date</TableCell>
-                          <TableCell>Customer</TableCell>
-                          <TableCell >Amount</TableCell>
-                          <TableCell >Total price ($)</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {row.history.map((historyRow) => (
-                          <TableRow key={historyRow.date}>
-                            <TableCell component="th" scope="row">
-                              {historyRow.date}
-                            </TableCell>
-                            <TableCell>{historyRow.customerId}</TableCell>
-                            <TableCell >{historyRow.amount}</TableCell>
-                            <TableCell >
-                              {Math.round(historyRow.amount * row.price * 100) / 100}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                    
                   </Box>
                 </Collapse>
               </TableCell>
@@ -131,13 +85,7 @@ export const ProductList = () => {
           </React.Fragment>
         );
       }
-      const rows = [
-        createData(1, 'Tomato', 30, true),
-        createData(2, 'Brocoli', 25, true),
-        createData(3, 'Carrot', 40, true),
-        createData(4, 'Spinach', 10, false),
-        createData(5,'Bottle Gourd', 20, true),
-      ];
+  
 
     return <>
         <article className={clsContainer}>
@@ -165,17 +113,17 @@ export const ProductList = () => {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {rows.map((row) => (
-                            <Row key={row.name} row={row} />
+                        {products.map((product) => (
+                            <Row key={product.name} product={product} />
                         ))}
                         </TableBody>
                     </Table>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={rows.length}
+                        count={products.length}
                         rowsPerPage={10}
-                        page={1}
+                        page={0}
                         onPageChange={() => {}}
                         // onRowsPerPageChange={handleChangeRowsPerPage}
         />

@@ -1,10 +1,8 @@
-import { Autocomplete, Box, Button, Chip, Collapse, Drawer, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TextField, Typography } from "@mui/material"
+import { Autocomplete,  Button, Chip, Drawer, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Switch, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TextField } from "@mui/material"
 import { Card } from "../../basecomponents/Card"
 import { useEffect, useState } from "react";
-import { IProduct } from "../../models/IProduct";
 import { MainAlert } from "../../basecomponents/MainAlert";
-import { useDispatch } from "react-redux";
-import { NotificationsActions } from "../../store/Notifications";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "../../services/Navigate";
 import { ICategory } from "../../models/ICategory";
@@ -14,80 +12,66 @@ import { GetIcon } from "../../helpers/GetIcons";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ProductVariantCreate } from "./variants/Create";
-import { ProductVariantEdit } from "./variants/Edit";
+import { getCategories, getProduct, getTags, getVariants } from "../../services/api";
+import { IState } from "../../store/interfaces/IState";
+import { ProductStateActions } from "../../store/Product";
+import { IVariant } from "../../models/IVariant";
 
-interface IProps {
-    product?: IProduct,
-    isEdit?: boolean
-  }
-
-  const categories: ICategory[] = [
-    { id: 1, name: 'Electronics', isPublished: true, subCategories: [
-        { id: 11, name: 'Phones', isPublished: true, parentCategory: 1, subCategories: [
-            {id: 101, name: "One Plus", isPublished: true, parentCategory: 11}
-        ] },
-        { id: 12, name: 'Laptops', isPublished: true, parentCategory: 1, subCategories: [
-            {id: 101, name: "Lenovo", isPublished: true, parentCategory: 12}
-        ]  },
-        { id: 13, name: 'Cameras', isPublished: true , parentCategory: 1, subCategories: [
-            {id: 101, name: "Sony", isPublished: true, parentCategory: 13}
-        ] },
-    ]},
-    { id: 2, name: 'Fashion', isPublished: true, subCategories: [
-        { id: 21, name: 'Clothing', isPublished: true, parentCategory: 2, subCategories: [
-            {id: 102, name: "Shirts", isPublished: true, parentCategory: 21}
-        ]  },
-        { id: 22, name: 'Shoes', isPublished: true, parentCategory: 2, subCategories: [
-            {id: 102, name: "Casuals", isPublished: true, parentCategory: 22}
-        ]  },
-        { id: 23, name: 'Accessories', isPublished: true, parentCategory: 2, subCategories: [
-            {id: 102, name: "Stand", isPublished: true, parentCategory: 23}
-        ]  },
-    ]}
-];
-
-
-export const ProductCreate = (props: IProps) => {
+export const ProductCreate = () => {
 
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4 mt-8";
-    const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
     const clsChild = "font-Play font-medium overflow-scroll";
 
     const dispatch = useDispatch();
     var navigate = useNavigate();
+    var state = useSelector((state: IState) => state.ProductState);
 
-    const [product, setProduct] = useState<IProduct>();
-    const [name, setName] = useState(product?.name);
-    const [image, setImage] = useState(product?.image);
-    const [description, setDescription] = useState(product?.description);
-    const [isPublished, setIsPublished] = useState(product?.isPublished || false);
-    const [price, setPrice] = useState(product?.price);
-    const [discount, setDiscount] = useState(product?.discount);
-    const [tax, setTax] = useState(product?.tax);
+    const [name, setName] = useState<string>();
+    const [image, setImage] = useState<string>();
+    const [description, setDescription] = useState<string>();
+    const [isPublished, setIsPublished] = useState<boolean>();
+    const [price, setPrice] = useState<number>();
+    const [discount, setDiscount] = useState<number>();
+    const [tax, setTax] = useState<number>();
     const [show, setShow] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
     const [selectedSubcategory, setSelectedSubcategory] = useState<ICategory | null>(null);
     const [selectedMinicategory, setSelectedMinicategory] = useState<ICategory | null>(null);
     
-    const [createVariant, setCreateVariant] = useState<boolean>(false);
-    const [editVariant, setEditVariant] = useState<number | null>(null);
+
+    const [tags, setTags] = useState<ITag[]>([]);
+    const [variants, setVariants] = useState<IVariant[]>([]);
+    const [categories, setCategories] = useState<ICategory[]>([]);
 
     useEffect(() => {
-        dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT PRODUCT" : "ADD PRODUCT"));
 
-        if(props.product) {
-            setProduct(props.product);
-            setName(props.product.name);
-            setImage(props.product.image);
-            setDescription(props.product.description);
-            setDiscount(props.product.discount);
-            setTax(props.product.tax);
-            setIsPublished(props.product.isPublished);
-            setPrice(props.product.price);            
-        }
+        getProduct().then(product => {
+            dispatch(ProductStateActions.setProduct(product));
 
-        setShow(true);
+            setName(product.name);
+            setImage(product.image);
+            setDescription(product.description);
+            setDiscount(product.discount);
+            setTax(product.tax);
+            setIsPublished(product.isPublished);
+            setPrice(product.price);      
+            setShow(true);      
+        });
+
+        getTags().then(tags => {setTags(tags)});
+        getVariants().then(variants => {setVariants(variants)});
+        getCategories().then(categories => {setCategories(categories)});
     }, []);
+
+    const viewVariant = (variantId: number, variantMode: string) => {
+        dispatch(ProductStateActions.setVariant(variantId));
+        dispatch(ProductStateActions.setVariantMode(variantMode));
+        var productVaraint = state.product.productVariants?.find(variant => variant.variantId === variantId);
+        if(productVaraint) {
+            dispatch(ProductStateActions.setProductVariant(productVaraint));
+        }
+    }
+
 
     const create = () => {
 
@@ -129,45 +113,14 @@ export const ProductCreate = (props: IProps) => {
 
     const [productTags, setProductTags] = useState<ITag[]>();
 
-    const tags: ITag[]= [
-      { id: 1, name: 'Option 1', isPublished: true },
-      { id: 2, name: 'Option 2', isPublished: true },
-      { id: 3, name: 'Option 3', isPublished: true },
-      { id: 4, name: 'Option 4', isPublished: true },
-      { id: 5, name: 'Option 5', isPublished: true }
-    ];
 
     const handleChange = (event: any, value: ITag[]) => {
         event = event;
         setProductTags(value);
     };
-
-    function createVariantData(
-        id: number,
-        name: string,
-        published: boolean,
-      ) {
-        return {
-          id,
-          name,
-          published,
-          history: [
-            {
-              date: '2020-01-05',
-              customerId: '11091700',
-              amount: 3,
-            },
-            {
-              date: '2020-01-02',
-              customerId: 'Anonymous',
-              amount: 1,
-            },
-          ],
-        };
-      }
       
-      function VariantRow(props: { row: ReturnType<typeof createVariantData> }) {
-        const { row } = props;
+      function VariantRow(props: { variant: IVariant }) {
+        const { variant } = props;
         const [open, setOpen] = React.useState(false);
       
         return (
@@ -183,73 +136,35 @@ export const ProductCreate = (props: IProps) => {
                 </IconButton>
               </TableCell>
               <TableCell component="th" scope="row">
-                {row.name}
+                {variant.name}
               </TableCell>
               <TableCell >
-                <Switch defaultChecked={row.published} />
+                <Switch defaultChecked={variant.isPublished} />
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => setEditVariant(row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => viewVariant(variant.id, "V")}>
                         <IconButton aria-label="Example">
-                            {GetIcon("visibility", "--btn-icon-color-view")}
+                            {GetIcon("visibility", "--btn-icon-color-view")} 
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded">
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => viewVariant(variant.id, "E")}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
-                    </span>
-                    <span className="bg-btn-icon-color-dull rounded">
-                        <IconButton aria-label="Example">
-                            {GetIcon("delete", "--btn-icon-color-delete")}
-                        </IconButton>
-                    </span>
+                    </span>                    
                 </section>                
              </TableCell>
 
              
             </TableRow>
             <TableRow>
-              <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                  <Box sx={{ margin: 1 }}>
-                    <Typography variant="h6" gutterBottom component="div">
-                      History
-                    </Typography>
-                    <Table size="small" aria-label="purchases">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Date</TableCell>
-                          <TableCell>Customer</TableCell>
-                          <TableCell >Amount</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {row.history.map((historyRow) => (
-                          <TableRow key={historyRow.date}>
-                            <TableCell component="th" scope="row">
-                              {historyRow.date}
-                            </TableCell>
-                            <TableCell>{historyRow.customerId}</TableCell>
-                            <TableCell >{historyRow.amount}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </Box>
-                </Collapse>
-              </TableCell>
+             
             </TableRow>
           </React.Fragment>
         );
       }
-      const variantRows = [
-        createVariantData(1, 'Size', true),
-        createVariantData(2, 'Color', true),
-        createVariantData(3, 'Weight', true)
-      ]; 
-   
+     
 
     return <>
         {show && <article>
@@ -272,12 +187,6 @@ export const ProductCreate = (props: IProps) => {
                     <TextField multiline id="tax" label="Tax" variant="outlined" size="small" type="number" value={tax} onChange={(e: any) => setTax(e.target.value)}/>
                 </section>
                 <article className={clsContainer}>
-                    <section className={clsHeader}>
-                        <h6> Variants List</h6>
-                        <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => setCreateVariant(true)}>
-                        <span className="text-gray-100 font-bold tracking-wider">Add Variant</span>
-                        </Button>
-                    </section>
                     <section className={clsChild}>
                         {/* <TableContainer component={Paper}> */}
                             <Table aria-label="collapsible table">
@@ -295,36 +204,29 @@ export const ProductCreate = (props: IProps) => {
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                {variantRows.map((row) => (
-                                    <VariantRow key={row.name} row={row} />
+                                {variants?.map((variant) => (
+                                    <VariantRow key={variant.name} variant={variant} />
                                 ))}
                                 </TableBody>
                             </Table>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
                                 component="div"
-                                count={variantRows.length}
+                                count={variants?.length}
                                 rowsPerPage={10}
-                                page={1}
+                                page={0}
                                 onPageChange={() => {}}
                                 // onRowsPerPageChange={handleChangeRowsPerPage}
                 />
                         {/* </TableContainer> */}
                     </section>
 
-                    <Drawer open={createVariant} onClose={() => {setCreateVariant(false)}}  className="w-full" anchor={"right"} PaperProps={{
-                        sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
-                            <Card card= { {cardHeader: "Add Variant"}}>
-                                <ProductVariantCreate />
-                            </Card>
-                        </Drawer>
-
-                        <Drawer open={!!editVariant} onClose={() => {setEditVariant(null)}}   className="w-full" anchor={"right"} PaperProps={{
+                    <Drawer open={['V', 'E'].includes(state.variantMode)}  className="w-full" anchor={"right"} PaperProps={{
                         sx: {backgroundColor: "rgb(249, 247, 247)", width: "400px"} }}>
                             <Card card= { {cardHeader: "Edit Variant"}}>
-                                <ProductVariantEdit />
+                                <ProductVariantCreate />
                             </Card>
-                        </Drawer>
+                    </Drawer>
                 </article>
                 
             </Card>
@@ -414,7 +316,10 @@ export const ProductCreate = (props: IProps) => {
             <Card card= { {cardHeader: ""}}>
                 <section className="grid grid-cols-2 gap-8 rounded-lg">
                     <Button variant="outlined" onClick={() => NavigateTo.Products(navigate)}>Cancel</Button>
-                    <Button variant="contained" className="" onClick={() => create()}>{props.isEdit ? "Update" : "Create" }</Button>
+                    {state.mode === "C" && <Button variant="contained" className="" onClick={() => create()}>Create</Button>}
+                    {state.mode === "E" && <Button variant="contained" className="" onClick={() => create()}>Update</Button>}
+                    {state.mode === "D" && <Button variant="contained" className="" onClick={() => {}}>Delete</Button>}
+                    {state.mode === "V" && <Button variant="contained" className="" onClick={() => NavigateTo.Products(navigate)}>Ok</Button>}
                 </section>
             </Card>
         </article>}

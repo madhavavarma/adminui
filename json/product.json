@@ -11,6 +11,6 @@
     "tax": 0,
 
     "productVariants": [
-        {"productId": 1, "variantId": 1, "options": [ {"optionId": 2, "price": 30 } ]}
+        {"productId": 1, "isPublished": true, "variantId": 1, "options": [ {"optionId": 2, "price": 30, "isPublished": true } ]}
     ]
 }

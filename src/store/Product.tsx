@@ -34,19 +34,56 @@ const setProduct = (state: IProductState, action: PayloadAction<IProduct>) => {
 }
 
 const setVariantMode = (state: IProductState, action: PayloadAction<string>) => {
-    console.log(action.payload);
     state.variantMode = action.payload;
     
 }
 
 const setVariant = (state: IProductState, action: PayloadAction<number>) => {
-    console.log(action.payload);
     state.variantId = action.payload;
 }
 
 const setProductVariant = (state: IProductState, action: PayloadAction<IProductVariant>) => {
     state.productVariant = action.payload;
 }
+
+const updateProductVariant = (state: IProductState, action: PayloadAction<any>) => {
+    var productVariant = state.product.productVariants.find(pv => pv.variantId === state.productVariant?.variantId);
+
+    if(productVariant) {
+        state.product.productVariants = state.product.productVariants.filter(pv => pv.variantId != productVariant?.variantId);
+    } 
+
+    if(!state.productVariant) {
+        state.productVariant = {productId: -1, variantId: -1, isPublished: false, options: []};
+    }
+
+    
+    state.productVariant.isPublished = action.payload.isPublished;
+    state.product.productVariants.push(state.productVariant);
+    
+}
+
+const updateProductVariantOption = (state: IProductState, action: PayloadAction<any>) => {
+
+    if(!state.productVariant) {
+        state.productVariant = {productId: -1, variantId: -1, isPublished: false, options: []};
+    }
+
+    const productOption = state.productVariant?.options.find(option => option.optionId == action.payload.optionId);
+
+    if(productOption) {
+      productOption.price = action.payload.price;
+      productOption.isPublished = action.payload.isPublished;
+    } else {
+      state.productVariant?.options.push({
+        optionId: action.payload.optionId, 
+        price: action.payload.price,  
+        isPublished: action.payload.isPublished
+        });
+    }
+}
+
+
 
 const updateProduct = (state: IProductState, action: PayloadAction<Partial<IProduct>>) => {
     state.product.name = action.payload.name || "";
@@ -56,7 +93,6 @@ const updateProduct = (state: IProductState, action: PayloadAction<Partial<IProd
     state.product.price = action.payload.price || 0;
     state.product.discount = action.payload.discount || 0;
     state.product.tax = action.payload.tax || 0;
-    console.log(action.payload);
 }
 
 
@@ -71,7 +107,10 @@ const ProductSlice = createSlice({
 
         setVariantMode,
         setVariant,
-        setProductVariant
+        setProductVariant,
+
+        updateProductVariantPrice: updateProductVariantOption,
+        updateProductVariant
     }
 });
 

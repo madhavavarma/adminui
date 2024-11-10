@@ -18,6 +18,7 @@ export const ProductVariantCreate = () => {
 
     const [show, setShow] = useState(true);
     const [variant, setVariant] = useState<IVariant>();
+    const [isPublished, setIsPublished] = useState<boolean>(state.productVariant?.isPublished || false);
 
 
     useEffect(() => {
@@ -33,6 +34,25 @@ export const ProductVariantCreate = () => {
       dispatch(ProductStateActions.setVariantMode(""));
     }
 
+    const updateOption = (optionId: number, price: number, isPublished: boolean) => {
+        dispatch(ProductStateActions.updateProductVariantPrice({optionId, price, isPublished}));
+    }
+
+    const updateOptionPrice = (optionId: number, price: number) => {
+      var isPublished = state.productVariant?.options.find(x => x.optionId == optionId)?.isPublished;
+      updateOption(optionId, price, isPublished || false);
+    }
+
+    const updateOptionIsPublished = (optionId: number, isPublished: boolean) => {
+      var price = state.productVariant?.options.find(x => x.optionId == optionId)?.price;
+      updateOption(optionId, price || 0, isPublished || false);
+    }
+
+    const updateProductVariant = () => {
+      dispatch(ProductStateActions.updateProductVariant({isPublished}));
+      dispatch(ProductStateActions.setVariantMode(""));
+    }
+
 
 
     function Row(props: { variantOption: IOption }) {
@@ -45,10 +65,16 @@ export const ProductVariantCreate = () => {
                 {row.name}
               </TableCell>
               <TableCell >
-                <Switch defaultChecked={!!state.productVariant?.options.find(x => x.optionId == row.id)} /> 
+                <Switch defaultChecked={state.productVariant?.options.find(x => x.optionId == row.id)?.isPublished} 
+                 onChange={(e) => updateOptionIsPublished(row.id || 0, e.target.checked)}
+                 disabled = {state.variantMode == "V"} 
+                value={row.isPublished} /> 
              </TableCell>
              <TableCell >
-                 <TextField id="price" required label="Amount" variant="outlined" size="small"  value={state.productVariant?.options.find(x => x.optionId == row.id)?.price} />         
+                 <TextField id="price" required label="Amount" variant="outlined" size="small" value={row.price}
+                  onBlur={(e) => updateOptionPrice(row.id || 0, +e.target.value)} 
+                  disabled = {state.variantMode == "V"} 
+                  defaultValue={state.productVariant?.options.find(x => x.optionId == row.id)?.price || 0} />         
              </TableCell>
             </TableRow>
           </React.Fragment>
@@ -64,7 +90,7 @@ export const ProductVariantCreate = () => {
                     </FormControl>
                     <span className="">
                         <FormControlLabel label= "Is Published" control= {
-                        <Switch checked={!!state.productVariant} /> }  />
+                        <Switch onChange={(e) => setIsPublished(e.target.checked)} defaultChecked = {isPublished} /> } disabled = {state.variantMode == "V"} />
                     </span>
                 </section>
 
@@ -79,7 +105,7 @@ export const ProductVariantCreate = () => {
                         <TableRow>
                             <TableCell>Option</TableCell>
                             <TableCell>Published</TableCell>
-                            <TableCell>Price</TableCell>
+                            <TableCell onClick= {() => {console.log(state.productVariant)}}>Price</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
@@ -102,7 +128,7 @@ export const ProductVariantCreate = () => {
                 
                 <section className="grid grid-cols-2 gap-2 rounded-lg mt-8">
                     <Button variant="outlined" onClick={() => {cancel()}}>Cancel</Button>
-                    {state.variantMode === "E" && <Button variant="contained" className="" onClick={() => cancel()}>Update</Button>}
+                    {state.variantMode === "E" && <Button variant="contained" className="" onClick={() => updateProductVariant()}>Update</Button>}
                     {state.variantMode === "V" && <Button variant="contained" className="" onClick={() => cancel()}>Ok</Button>}
                 </section>
         </article>}

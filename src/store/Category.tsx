@@ -34,7 +34,6 @@ const updateCategory = (state: ICategoryState, action: PayloadAction<Partial<ICa
     state.category.name = action.payload.name || "";
     state.category.isPublished = action.payload.isPublished || false;
     state.category.image = action.payload.image;
-    console.log(action.payload);
 }
 
 const setMode =  (state: ICategoryState, action: PayloadAction<string>) => {
@@ -58,7 +57,6 @@ const addSubCategory =  (state: ICategoryState, action: PayloadAction<ICategory>
     var subCategory = action.payload;
     subCategory.parentCategory = state.category.id;
     subCategory.subCategories = []
-    console.log(subCategory)
 
     if(state.category.subCategories) {
         state.category.subCategories.push(subCategory);

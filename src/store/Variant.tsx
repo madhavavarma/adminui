@@ -28,7 +28,6 @@ const setVariant = (state: IVariantState, action: PayloadAction<IVariant>) => {
 const updateVariant = (state: IVariantState, action: PayloadAction<Partial<IVariant>>) => {
     state.variant.name = action.payload.name || "";
     state.variant.isPublished = action.payload.isPublished || false;
-    console.log(action.payload);
 }
 
 const setMode =  (state: IVariantState, action: PayloadAction<string>) => {
@@ -55,7 +54,6 @@ const setDefaultOption =  (state: IVariantState) => {
 const addOption =  (state: IVariantState, action: PayloadAction<IOption>) => {
     var option = action.payload;
     option.variantId = state.variant.id;
-    console.log(option)
     state.variant.options.push(option);
 }
 

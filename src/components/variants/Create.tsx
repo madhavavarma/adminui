@@ -40,6 +40,8 @@ export const VariantCreate = () => {
                 setIsPublished(variant?.isPublished || false);
                 setShow(true);
             })
+        } else {
+            setShow(true);
         }
     }, []);
 
@@ -49,7 +51,6 @@ export const VariantCreate = () => {
 
     const create = () => {
         
-        console.log(state.variant);
         // NavigateTo.VariantsCreate(navigate);
     }
 

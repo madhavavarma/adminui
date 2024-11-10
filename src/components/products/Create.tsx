@@ -3,7 +3,7 @@ import { Card } from "../../basecomponents/Card"
 import { useEffect, useState } from "react";
 import { MainAlert } from "../../basecomponents/MainAlert";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NavigateTo } from "../../services/Navigate";
 import { ICategory } from "../../models/ICategory";
 import { ITag } from "../../models/ITag";
@@ -42,25 +42,31 @@ export const ProductCreate = () => {
     const [tags, setTags] = useState<ITag[]>([]);
     const [variants, setVariants] = useState<IVariant[]>([]);
     const [categories, setCategories] = useState<ICategory[]>([]);
+    var params = useParams();
 
     useEffect(() => {
-
-        getProduct().then(product => {
-            dispatch(ProductStateActions.setProduct(product));
-
-            setName(product.name);
-            setImage(product.image);
-            setDescription(product.description);
-            setDiscount(product.discount);
-            setTax(product.tax);
-            setIsPublished(product.isPublished);
-            setPrice(product.price);      
-            setShow(true);      
-        });
-
         getTags().then(tags => {setTags(tags)});
         getVariants().then(variants => {setVariants(variants)});
         getCategories().then(categories => {setCategories(categories)});
+
+        if(params.id) {
+            getProduct().then(product => {
+                dispatch(ProductStateActions.setProduct(product));
+    
+                setName(product.name);
+                setImage(product.image);
+                setDescription(product.description);
+                setDiscount(product.discount);
+                setTax(product.tax);
+                setIsPublished(product.isPublished);
+                setPrice(product.price);      
+                setShow(true);      
+            });
+
+            
+        } else {
+            setShow(true); 
+        }
     }, []);
 
     const viewVariant = (variantId: number, variantMode: string) => {
@@ -74,19 +80,6 @@ export const ProductCreate = () => {
 
 
     const create = () => {
-
-        var product = {
-            name,
-            description,
-            image,
-            isPublished,
-            price,
-            discount,
-            tax
-        }
-
-        console.log(product);
-
         NavigateTo.Products(navigate);
     }
 

@@ -25,8 +25,6 @@ export const TagCreate = (props: IProps) => {
     useEffect(() => {
         dispatch(NotificationsActions.setHeaderMessage( props.isEdit ? "EDIT TAG" : "ADD TAG"));
 
-        console.log(props.tag)
-
         if(props.tag) {
             setTag(props.tag);
             setName(props.tag.name);

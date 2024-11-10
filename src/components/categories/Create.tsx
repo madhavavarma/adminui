@@ -41,6 +41,8 @@ export const CategoryCreate = () => {
                 setImage(category?.image)
                 setShow(true);
             })
+        } else {
+            setShow(true);
         }
 
     }, []);
@@ -50,7 +52,6 @@ export const CategoryCreate = () => {
     }, [name, isPublished, image, state.category])
 
     const create = () => {
-        console.log(state.category);
     }
 
     const createSubCategory = () => {

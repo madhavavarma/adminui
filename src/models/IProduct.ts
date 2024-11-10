@@ -20,12 +20,14 @@ export interface IProduct {
 export interface IProductVariant {
     productId: number,
     variantId: number,
+    isPublished: boolean,
     options: IProductVariantOption[]
 }
 
 export interface IProductVariantOption {
     optionId: number,
-    price: number
+    price: number,
+    isPublished: boolean
 }
 
 export interface IProductCategories {

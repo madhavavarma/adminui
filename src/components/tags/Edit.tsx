@@ -15,7 +15,6 @@ export const TagEdit = (props: IProps) => {
     const [tag, setTag] = useState(props.tag);
 
     useEffect(() => {
-        console.log(tag);
         if(tag) {
             setTag(props.tag)
         }

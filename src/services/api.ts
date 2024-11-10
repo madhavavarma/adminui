@@ -2,6 +2,7 @@ import axios from "axios";
 import { ITag } from "../models/ITag";
 import { IVariant } from "../models/IVariant";
 import { IProduct } from "../models/IProduct";
+import { IOrder } from "../models/IOrder";
 
 
 export const isMock = true;
@@ -81,6 +82,17 @@ export const getTags = async () => {
     }
     else {
         return (await axios.get<ITag[]>('/adminui/tags.json')).data;
+    }   
+
+}
+
+export const getOrders = async () => {
+
+    if(isMock) {
+        return (await axios.get<IOrder[]>('/adminui/json/orders.json')).data;
+    }
+    else {
+        return (await axios.get<IOrder[]>('/adminui/orders.json')).data;
     }   
 
 }

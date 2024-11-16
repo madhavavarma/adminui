@@ -5,22 +5,10 @@ import {
   TableHead, 
   TableRow, 
   Box, 
-  Typography,
-  Chip
+  Typography
 } from '@mui/material';
 import { IProduct } from '../../models/IProduct';
 
-interface Product {
-  id: string;
-  name: string;
-  size: string;
-  status: string;
-  quantity: number;
-  price: number;
-  tax: number;
-  amount: number;
-  image: string;
-}
 
 const products: IProduct[] = [
   {

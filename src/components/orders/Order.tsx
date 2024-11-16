@@ -5,7 +5,7 @@ import { getMode } from "../../helpers/CommonFunctions";
 import { OrderStateActions } from "../../store/Order";
 import { getOrder } from "../../services/api";
 import { IOrder } from "../../models/IOrder";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Card, CardContent, CardHeader, Chip, Container, Grid, Paper, Typography } from "@mui/material";
 import { OrderProgress } from "./OrderProgress";
 import { OrderTimeline } from "./OrderTimeline";
@@ -14,6 +14,7 @@ import { OrderSummary } from "./OrderSummary";
 import { PaymentInfo } from "./PaymentInfo";
 import { CustomerDetails } from "./CustomerDetails";
 import { ProductTable } from "./ProductTable";
+import { IState } from "../../store/interfaces/IState";
 
 export const Order = () => {
 
@@ -21,7 +22,7 @@ export const Order = () => {
     // var navigate = useNavigate();
     var dispatch = useDispatch();
     const [show, setShow] = useState(false);
-    // var state = useSelector((state: IState) => state.OrderState);
+    var state = useSelector((state: IState) => state.OrderState);
 
     useEffect(() => {
         var mode = getMode(params?.mode || "");
@@ -39,7 +40,7 @@ export const Order = () => {
     }, []);
 
     return <Fragment>
-        { show && 
+        { show && state.order &&
         
         <Box className="min-h-screen bg-gray-50 py-8">
       <Container maxWidth="xl">
@@ -50,13 +51,13 @@ export const Order = () => {
                 <Box>
                   <Box className="flex items-center gap-2 mb-1">
                     <Typography variant="h6" className="font-medium">
-                      #0758267/90
+                      #{state?.order?.id}
                     </Typography>
                     <Chip label="Paid" size="small" className="bg-green-100 text-green-800" />
                     <Chip label="In Progress" size="small" className="bg-yellow-100 text-yellow-800" />
                   </Box>
                   <Typography variant="body2" color="text.secondary">
-                    Order / Order Details / #0758267/90 - April 23, 2024 at 6:23 pm
+                    Order / Order Details / {state?.order?.id} - {state.order?.orderDate}
                   </Typography>
                 </Box>
                 <Box className="flex gap-2">

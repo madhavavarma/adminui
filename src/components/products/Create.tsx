@@ -34,9 +34,9 @@ export const ProductCreate = () => {
     const [discount, setDiscount] = useState<number>();
     const [tax, setTax] = useState<number>();
     const [show, setShow] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
-    const [selectedSubcategory, setSelectedSubcategory] = useState<ICategory | null>(null);
-    const [selectedMinicategory, setSelectedMinicategory] = useState<ICategory | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<Number[]>([]);
+    const [selectedSubcategory, setSelectedSubcategory] = useState<Number[]>([]);
+    const [selectedMinicategory, setSelectedMinicategory] = useState<Number[]>([]);
     
 
     const [tags, setTags] = useState<ITag[]>([]);
@@ -84,24 +84,30 @@ export const ProductCreate = () => {
     }
 
     const handleCategoryChange = (event: any) => {
-        const categoryId = event.target.value as number;
-        const category = categories.find(cat => cat.id === categoryId) || null;
-        setSelectedCategory(category);
-        setSelectedSubcategory(null); // Reset subcategory when category changes
+        console.log(event.target.value)
+        setSelectedCategory(event.target.value);
+        setSelectedSubcategory([]); // Reset subcategory when category changes
+        setSelectedMinicategory([]); 
     };
 
     const handleSubcategoryChange = (event: any) => {
-        const subcategoryId = event.target.value as number;
-        const subcategory = selectedCategory?.subCategories?.find((sub: ICategory) => sub.id === subcategoryId) || null;
-        setSelectedSubcategory(subcategory);
-        setSelectedMinicategory(null);
+        console.log(event.target.value)
+        setSelectedSubcategory(event.target.value);
+        setSelectedMinicategory([]); 
     };
 
     const handleMinicategoryChange = (event: any) => {
-        const minicategoryId = event.target.value as number;
-        const miniCategory = selectedSubcategory?.subCategories?.find((sub: ICategory) => sub.id === minicategoryId) || null;
-        setSelectedMinicategory(miniCategory);
+        console.log(event.target.value)
+        setSelectedMinicategory(event.target.value);
     };
+
+    const getCategoryName = (subCategoryId : number) =>  {
+        return categories.find(x => x.subCategories?.find(subCat => subCat.id === subCategoryId))?.name;
+    }
+
+    const getSubCategoryName = (miniCategoryId : number) =>  {
+        return categories.flatMap(x => x.subCategories).filter(x => !!x).find(x => x.subCategories?.find(subCat => subCat.id === miniCategoryId))?.name;
+    }
 
 
     const [productTags, setProductTags] = useState<ITag[]>();
@@ -227,22 +233,15 @@ export const ProductCreate = () => {
                 <section className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-8">
                     <FormControl fullWidth variant="outlined" margin="normal" size="small">
                         <InputLabel>Category</InputLabel>
-                        <Select 
-                            value={selectedCategory?.id || ''}
-                            onChange={handleCategoryChange}
-                            label="Category"
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        maxHeight: 200, // Set a max height for the dropdown
-                                    },
-                                },
-                            }}
-                            style={{ display: 'flex', alignItems: 'center' }} 
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
+                        <Select
+                                labelId="multiple-select-label"
+                                id="multiple-select"
+                                multiple
+                                value={selectedCategory}
+                                onChange={handleCategoryChange}
+                                renderValue={(selected) => categories.filter(x => selected?.includes(x.id))?.map(x => x.name).join(', ')} // to display selected items as a comma-separated list
+                            >
+                            
                             {categories.map((category) => (
                                 <MenuItem key={category.id} value={category.id} disabled={!category.isPublished}>
                                     {category.name}
@@ -251,37 +250,44 @@ export const ProductCreate = () => {
                         </Select>
                     </FormControl>
 
-                    <FormControl fullWidth variant="outlined" margin="normal" disabled={!selectedCategory}  size="small">
-                        <InputLabel>Subcategory</InputLabel>
+                    <FormControl fullWidth variant="outlined" margin="normal" size="small">
+                        <InputLabel>Sub Category</InputLabel>
                         <Select
-                            value={selectedSubcategory?.id || ''}
-                            onChange={handleSubcategoryChange}
-                            label="Subcategory"
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            {selectedCategory?.subCategories?.map((subcategory) => (
-                                <MenuItem key={subcategory.id} value={subcategory.id} disabled={!subcategory.isPublished}>
-                                    {subcategory.name}
+                                labelId="multiple-select-label"
+                                id="multiple-select"
+                                multiple
+                                value={selectedSubcategory}
+                                onChange={handleSubcategoryChange}
+                                renderValue={(selected) => categories.flatMap(x => x.subCategories).filter(x => selected?.includes(x?.id || 0))?.map(x => getCategoryName(x?.id || 0) + " => " + x?.name).join(', ')} // to display selected items as a comma-separated list
+                            >
+                            
+                            {categories.filter(x => selectedCategory.includes(x.id)).flatMap(x => x.subCategories).map((category) => (
+                                <MenuItem key={category?.id} value={category?.id} disabled={!category?.isPublished}>
+                                    {getCategoryName(category?.id || 0) + " => " + category?.name}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
 
-                    <FormControl fullWidth variant="outlined" margin="normal" disabled={!selectedSubcategory}  size="small">
-                        <InputLabel>MiniCategory</InputLabel>
+                    <FormControl fullWidth variant="outlined" margin="normal" size="small">
+                        <InputLabel>Mini Category</InputLabel>
                         <Select
-                            value={selectedMinicategory?.id || ''}
-                            onChange={handleMinicategoryChange}
-                            label="Minicategory"
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            {selectedSubcategory?.subCategories?.map((minicategory) => (
-                                <MenuItem key={minicategory.id} value={minicategory.id} disabled={!minicategory.isPublished}>
-                                    {minicategory.name}
+                                labelId="multiple-select-label"
+                                id="multiple-select"
+                                multiple
+                                value={selectedMinicategory}
+                                onChange={handleMinicategoryChange}
+                                renderValue={(selected) => categories
+                                    .flatMap(x => x.subCategories)
+                                    .flatMap(x => x?.subCategories)
+                                    .filter(x => selected?.includes(x?.id || 0))?.map(x => getSubCategoryName(x?.id || 0) + " => " + x?.name)
+                                    .join(', ')} // to display selected items as a comma-separated list
+                            >
+                            
+                            {categories.filter(x => selectedCategory.includes(x.id)).flatMap(x => x.subCategories)
+                            .flatMap(x => x?.subCategories).filter(x => !!x).map((category) => (
+                                <MenuItem key={category?.id} value={category?.id} disabled={!category?.isPublished}>
+                                    {getSubCategoryName(category?.id || 0) + " => " + category?.name}
                                 </MenuItem>
                             ))}
                         </Select>

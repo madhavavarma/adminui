@@ -8,6 +8,7 @@ import {
   Typography,
   Chip
 } from '@mui/material';
+import { IProduct } from '../../models/IProduct';
 
 interface Product {
   id: string;
@@ -21,17 +22,20 @@ interface Product {
   image: string;
 }
 
-const products: Product[] = [
+const products: IProduct[] = [
   {
-    id: '1',
+    id: 1,
     name: 'Men Black Slim Fit T-shirt',
-    size: 'M',
-    status: 'Ready',
-    quantity: 1,
     price: 80.00,
     tax: 3.00,
-    amount: 83.00,
-    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&h=80&fit=crop'
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&h=80&fit=crop',
+
+    description: "",
+    discount: 0,
+    isPublished: true,
+    productCategories: [],
+    productVariants: [],
+    productTags: []
   },
   // Add more products as needed
 ];
@@ -41,8 +45,6 @@ export const ProductTable = () => (
     <TableHead className="bg-gray-50">
       <TableRow>
         <TableCell>Product Name & Size</TableCell>
-        <TableCell>Status</TableCell>
-        <TableCell>Quantity</TableCell>
         <TableCell>Price</TableCell>
         <TableCell>Tax</TableCell>
         <TableCell>Amount</TableCell>
@@ -60,23 +62,23 @@ export const ProductTable = () => (
                 <Typography variant="subtitle2" className="text-gray-900">
                   {product.name}
                 </Typography>
-                <Typography variant="caption" className="text-gray-500">
+                {/* <Typography variant="caption" className="text-gray-500">
                   Size: {product.size}
-                </Typography>
+                </Typography> */}
               </Box>
             </Box>
           </TableCell>
-          <TableCell>
+          {/* <TableCell>
             <Chip 
               label={product.status}
               size="small"
               className={product.status === 'Ready' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}
             />
           </TableCell>
-          <TableCell>{product.quantity}</TableCell>
+          <TableCell>{product.quantity}</TableCell> */}
           <TableCell>${product.price.toFixed(2)}</TableCell>
           <TableCell>${product.tax.toFixed(2)}</TableCell>
-          <TableCell>${product.amount.toFixed(2)}</TableCell>
+          <TableCell>${product.price.toFixed(2)}</TableCell>
         </TableRow>
       ))}
     </TableBody>

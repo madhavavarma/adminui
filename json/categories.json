@@ -15,8 +15,11 @@
         "isPublished": true,
         "image": "",
         "subCategories" : [
-            {"name": "Apple", "id": 1, "isPublished": true},
-            {"name": "Banana", "id": 2, "isPublished": true}
+            {"name": "Apple", "id": 3, "isPublished": true},
+            {"name": "Banana", "id": 4, "isPublished": true, "subCategories" : [
+                {"name": "Red Banana", "id": 3, "isPublished": true},
+                {"name": "Green Banana", "id": 4, "isPublished": true }
+        ]}
         ]
     }
 ]

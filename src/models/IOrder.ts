@@ -6,7 +6,7 @@ export interface IOrder {
     paymentStatus: string,
     items: number,
     orderStatus: string,
-    customer: string,
+    customer: ICustomerDetails,
 
     orderDate: string,
     shippingDate: string,

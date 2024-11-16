@@ -96,3 +96,14 @@ export const getOrders = async () => {
     }   
 
 }
+
+export const getOrder = async (id: number) => {
+
+    if(isMock) {
+        return (await axios.get<IOrder>('/adminui/json/order.json')).data;
+    }
+    else {
+        return (await axios.get<IOrder>('/adminui/order.json' + id)).data;
+    }   
+
+}

@@ -1,0 +1,102 @@
+{
+    "id": 1,
+    "total": 1000,
+    "paymentStatus": "paid",
+    "items": 2,
+    "orderStatus": "shipping",
+    "customer": {
+        "name": "Ram",
+        "email": "ram@gmail.com",
+        "phone": "9885015203",
+        "shippingAddress": {
+            "houseNo": "4-3-98",
+            "addressLine": "Madhavapuram Rd",
+            "landmark": "Near Telephone Exchange",
+            "state": "Andhra Pradesh",
+            "pincode": "533450"
+        },
+        "billingAddress": null
+    },
+
+    "orderDate": "01/01/2024 14:30",
+    "estimatedShippingDate": "02/01/2024 11:30",
+
+    "products": [
+        {
+            "id": 1,
+            "name": "Tomato",
+            "image": "",
+            "description": "Good For Health",
+        
+            "isPublished": true,
+            
+            "price": 30,
+            "discount": 0,
+            "tax": 0
+        },    
+        {
+            "id": 2,
+            "name": "Brinjal",
+            "image": "",
+            "description": "Good For Health",
+        
+            "isPublished": true,
+            
+            "price": 40,
+            "discount": 0,
+            "tax": 0
+        },
+        {
+            "id": 3,
+            "name": "Coconut",
+            "image": "",
+            "description": "Good For Health",
+        
+            "isPublished": true,
+            
+            "price": 30,
+            "discount": 0,
+            "tax": 0
+        },
+        {
+            "id": 4,
+            "name": "Ladies Finger",
+            "image": "",
+            "description": "Good For Health",
+        
+            "isPublished": true,
+            
+            "price": 30,
+            "discount": 0,
+            "tax": 0
+        },
+        {
+            "id": 5,
+            "name": "Onions",
+            "image": "",
+            "description": "Good For Health",
+        
+            "isPublished": true,
+            
+            "price": 50,
+            "discount": 0,
+            "tax": 0
+        }
+    ],
+
+    "orderSummary": {
+        "subTotal": 1000,
+        "discount": 0,
+        "deliveryCharge": 20,
+        "tax": 0,
+        "totalAmount": 1020
+    },
+
+    "paymentInformation": {
+        "paymentType": "Cash",
+        "transactionId": ""
+    },
+
+    "orderTimeline": {}
+
+}

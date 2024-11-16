@@ -61,17 +61,17 @@ export const OrdersList = () => {
              
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.CaregoriesView(navigate, row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.OrdersView(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.CaregoriesEdit(navigate, row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.OrdersEdit(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.CaregoriesDelete(navigate, row.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.OrdersView(navigate, row.id)}>
                         <IconButton aria-label="Example">
                             {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>

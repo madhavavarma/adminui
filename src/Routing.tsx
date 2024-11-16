@@ -10,6 +10,7 @@ import { TagsList } from "./components/tags/List";
 import { VariantCreate } from "./components/variants/Create";
 import { VariantList } from "./components/variants/List";
 import { OrdersList } from "./components/orders/OrdersList";
+import { Order } from "./components/orders/Order";
 
 
 
@@ -41,7 +42,7 @@ export default function Routing() {
                     <Route path="/tags/list" element={ <FluidContainer><TagsList /></FluidContainer>}></Route>
 
                      {/* Orders */}
-                    <Route path="/orders/:mode/:id" element={ <FluidContainer><ProductCreate /></FluidContainer>}></Route>
+                    <Route path="/orders/:mode/:id" element={ <FluidContainer><Order /></FluidContainer>}></Route>
                     <Route path="/orders/list" element={ <FluidContainer><OrdersList /></FluidContainer>}></Route>
                 </Route>
             </Routes>

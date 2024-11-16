@@ -71,4 +71,18 @@ export  class  NavigateTo  {
     static VarinatsDelete = (navigate: NavigateFunction, id: number) => {
         navigate("/variants/delete/" +id)
     }
+
+
+     // Orders
+     static Orders = (navigate: NavigateFunction) => {
+        navigate("/orders/list")
+    }
+
+    static OrdersEdit = (navigate: NavigateFunction, id: number) => {
+        navigate("/orders/edit/" +id)
+    }
+
+    static OrdersView = (navigate: NavigateFunction, id: number) => {
+        navigate("/orders/view/" +id)
+    }
 }

@@ -19,23 +19,40 @@ export const TagsList = () => {
 
     var dispatch = useDispatch();
 
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [pageNo, setPageNo] = useState(0);
     const [editTag, setEditTag] = useState<number | null>(null);
     const [viewTag, setViewTag] = useState<number | null>(null);
     const [deleteTag, setDeleteTag] = useState<number | null>(null);
     const [createTag, setCreateTag] = useState<boolean>(false);
     const [tags, setTags] = useState<ITag[]>();
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
-      dispatch(NotificationsActions.setHeaderMessage( "TAGS" ));
-      getTags().then((tags: ITag[]) => setTags(tags));     
+      getTags().then((tags: ITag[]) => setTags(tags));   
+      setShow(true);  
     }, []);   
 
     const close = () => {
-      setDeleteTag(null);
-      setEditTag(null);
-      setViewTag(null);
-      setCreateTag(false);
+      
+      getTags().then((tags: ITag[]) => {
+        setTags(tags);
+        setDeleteTag(null);
+        setEditTag(null);
+        setViewTag(null);
+        setCreateTag(false);
+      });   
     }
+
+    const handleChangePage = (event:any, newPage: any) => {
+      setPageNo(newPage);
+    };
+  
+    // Handle rows per page change
+    const handleChangeRowsPerPage = (event: any) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPageNo(0); // Reset to the first page when changing the rows per page
+    };
     
     
       
@@ -56,10 +73,10 @@ export const TagsList = () => {
                 </IconButton>
               </TableCell>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.tagName}
               </TableCell>
               <TableCell >
-                <Switch defaultChecked={row.isPublished} />
+                <Switch defaultChecked={row.isPublished} disabled />
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
@@ -119,10 +136,12 @@ export const TagsList = () => {
           </React.Fragment>
         );
     }
+
+    const currentTags = tags?.slice(pageNo * rowsPerPage, pageNo * rowsPerPage + rowsPerPage);
       
 
     return <>
-        <article className={clsContainer}>
+        {show && <article className={clsContainer}>
             <section className={clsHeader}>
                 <h6> Tags List</h6>
                 <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => setCreateTag(true)}>
@@ -146,8 +165,8 @@ export const TagsList = () => {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {tags?.map((row) => (
-                            <Row key={row.name} row={row} />
+                        {currentTags?.map((row) => (
+                            <Row key={row.tagName} row={row} />
                         ))}
                         </TableBody>
                     </Table>
@@ -155,10 +174,10 @@ export const TagsList = () => {
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
                         count={tags?.length || 0}
-                        rowsPerPage={10}
-                        page={0}
-                        onPageChange={() => {}} 
-                        // onRowsPerPageChange={handleChangeRowsPerPage}
+                        rowsPerPage={rowsPerPage}
+                        page={pageNo}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
         />}
                 {/* </TableContainer> */}
             </section>
@@ -187,6 +206,6 @@ export const TagsList = () => {
                     <TagEdit tag={tags?.find(tag => tag.id === deleteTag)} isDelete={true} close={close}/>
                 </Card>
             </Drawer>
-        </article>
+        </article> }
     </>
 }

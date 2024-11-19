@@ -24,7 +24,7 @@ function App() {
 
   return (
     <>
-      <main className = {clsMain} >
+      <main className = {clsMain} style={{height: "100vh"}} >
         <Provider store= {store}>
           <ThemeProvider theme={theme}>
               <Routing />

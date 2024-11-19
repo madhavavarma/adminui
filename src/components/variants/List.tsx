@@ -5,10 +5,12 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { GetIcon } from "../../helpers/GetIcons";
 import { NavigateTo } from "../../services/Navigate";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NotificationsActions } from "../../store/Notifications";
 import { IVariant } from "../../models/IVariant";
 import { getVariants } from "../../services/api";
+import { VariantStateActions } from "../../store/Variant";
+import { IState } from "../../store/interfaces/IState";
 
 
 export const VariantList = () => {
@@ -20,12 +22,19 @@ export const VariantList = () => {
     var navigate = useNavigate();
     var dispatch = useDispatch();
     const [variants, setVariants] = useState<IVariant[]>([]);
+    const state = useSelector((state: IState) => state.VariantState);
 
     useEffect(() => {
         dispatch(NotificationsActions.setHeaderMessage( "VARIANTS" ));
 
         getVariants().then((variants: IVariant[]) => setVariants(variants))
     }, []);
+
+    const variantCreate = () => {
+      dispatch(VariantStateActions.setMode("C"));
+      console.log(state)
+      NavigateTo.VariantsCreate(navigate);
+    }
       
     function Row(props: { variant: IVariant }) {
         const { variant: row } = props;
@@ -110,7 +119,7 @@ export const VariantList = () => {
         <article className={clsContainer}>
             <section className={clsHeader}>
                 <h6> Variants List</h6>
-                <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => NavigateTo.VariantsCreate(navigate)}>
+                <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => variantCreate()}>
                   <span className="text-gray-100 font-bold tracking-wider">Add Variant</span>
                 </Button>
             </section>
@@ -130,7 +139,7 @@ export const VariantList = () => {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {variants.map((row) => (
+                        {variants?.map((row) => (
                             <Row key={row.name} variant={row} />
                         ))}
                         </TableBody>

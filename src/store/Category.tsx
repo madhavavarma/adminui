@@ -4,21 +4,19 @@ import { ICategoryState } from "./interfaces/ICategoryState";
 
 
 var initialState: ICategoryState = {
-    category: { id: -1,
+    category: { 
     name: "",
     isPublished: false,
     image: "",
-    parentCategory: -1,
     subCategories: [
     ] },
 
     mode: "",
 
-    subCategory: { id: -1,
+    subCategory: { 
         name: "",
         isPublished: false,
         image: "",
-        parentCategory: -1,
         subCategories: [
         ] },
 
@@ -37,6 +35,7 @@ const updateCategory = (state: ICategoryState, action: PayloadAction<Partial<ICa
 }
 
 const setMode =  (state: ICategoryState, action: PayloadAction<string>) => {
+    state.category = initialState.category;
     state.mode = action.payload;
 }
 

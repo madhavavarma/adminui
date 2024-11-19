@@ -11,7 +11,7 @@ import { IProduct } from "../../models/IProduct";
 import { getProducts } from "../../services/api";
 
 
-export const ProductList = () => {
+export const Products = () => {
     const clsContainer = "bg-white shadow-card-shadow  border-card-bordercol rounded-lg divide-y mb-4";
     const clsHeader = "px-4 py-4 text-text-header-color size-sm font-semibold flex justify-between items-center";
     const clsChild = "font-Play font-medium overflow-scroll";
@@ -19,6 +19,8 @@ export const ProductList = () => {
     var navigate = useNavigate();
     var dispatch = useDispatch();
     const [products, setProducts] = useState<IProduct[]>([]);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [pageNo, setPageNo] = useState(0);
 
     useEffect(() => {
       dispatch(NotificationsActions.setHeaderMessage( "PRODUCTS" ));
@@ -50,17 +52,17 @@ export const ProductList = () => {
              </TableCell>
              <TableCell >
                 <section className="flex items-center gap-2">
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsView(navigate, product.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsView(navigate, product.id || 0)}>
                         <IconButton aria-label="Example">
                           {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsEdit(navigate, product.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsEdit(navigate, product.id || 0)}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span>
-                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsDelete(navigate, product.id)}>
+                    <span className="bg-btn-icon-color-dull rounded" onClick={() => NavigateTo.ProductsDelete(navigate, product.id || 0)}>
                         <IconButton aria-label="Example">
                             {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>
@@ -85,6 +87,16 @@ export const ProductList = () => {
           </React.Fragment>
         );
       }
+
+    const handleChangeRowsPerPage = (event: any) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPageNo(0); // Reset to the first page when changing the rows per page
+    };
+
+    const handleChangePage = (event:any, newPage: any) => {
+      event = event;
+      setPageNo(newPage);
+    };
   
 
     return <>
@@ -96,7 +108,6 @@ export const ProductList = () => {
                 </Button>
             </section>
             <section className={clsChild}>
-                {/* <TableContainer component={Paper}> */}
                     <Table aria-label="collapsible table">
                         <TableHead>
                         <TableRow>
@@ -122,12 +133,11 @@ export const ProductList = () => {
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
                         count={products.length}
-                        rowsPerPage={10}
-                        page={0}
-                        onPageChange={() => {}}
-                        // onRowsPerPageChange={handleChangeRowsPerPage}
+                        rowsPerPage={rowsPerPage}
+                        page={pageNo}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
         />
-                {/* </TableContainer> */}
             </section>
         </article>
     </>

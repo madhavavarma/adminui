@@ -52,12 +52,12 @@ const SubCategoryList = () => {
                           {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
-                    {state.mode === "E" && <span className="bg-btn-icon-color-dull rounded" onClick={() => setSubCategoryMode("E", subCategory)}>
+                    { ["C", "E"].includes(state.mode) && <span className="bg-btn-icon-color-dull rounded" onClick={() => setSubCategoryMode("E", subCategory)}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span>}
-                    {state.mode === "E" && <span className="bg-btn-icon-color-dull rounded" onClick={() => setSubCategoryMode("D", subCategory)}>
+                    { ["C", "E"].includes(state.mode) && <span className="bg-btn-icon-color-dull rounded" onClick={() => setSubCategoryMode("D", subCategory)}>
                         <IconButton aria-label="Example">
                           {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>

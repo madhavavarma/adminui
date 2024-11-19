@@ -6,7 +6,6 @@ import { IOption } from "../models/IOption";
 
 var initialState: IVariantState = {
     variant: {
-        id: -1,
         name: "",
         isPublished: false,
         options: [] 
@@ -14,7 +13,6 @@ var initialState: IVariantState = {
     mode: "",
     optionsMode: "",
     option: {
-        id: -1,
         name: "",
         isPublished: false,
         variantId: -1
@@ -31,6 +29,8 @@ const updateVariant = (state: IVariantState, action: PayloadAction<Partial<IVari
 }
 
 const setMode =  (state: IVariantState, action: PayloadAction<string>) => {
+    state.variant = initialState.variant;
+    state.option = initialState.option;
     state.mode = action.payload;
 }
 

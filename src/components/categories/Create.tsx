@@ -11,7 +11,7 @@ import { SubCategoryCreate } from "./SubCategories/Create";
 import { IState } from "../../store/interfaces/IState";
 import { getMode } from "../../helpers/CommonFunctions";
 import { CategoryStateActions } from "../../store/Category";
-import { getCategory } from "../../services/api";
+import { createCategory, deleteCategory, getCategory, updateCategory } from "../../services/api";
 
 
 export const CategoryCreate = () => {
@@ -52,6 +52,18 @@ export const CategoryCreate = () => {
     }, [name, isPublished, image, state.category])
 
     const create = () => {
+        createCategory(state.category)
+        .then(() => NavigateTo.Categories(navigate));
+    }
+
+    const updateC = () => {
+        updateCategory(state.category.id || 0, state.category)
+        .then(() => NavigateTo.Categories(navigate));
+    }
+
+    const deleteC = () => {
+        deleteCategory(state.category.id || 0)
+        .then(() => NavigateTo.Categories(navigate));
     }
 
     const createSubCategory = () => {
@@ -86,8 +98,8 @@ export const CategoryCreate = () => {
                 <section className="grid grid-cols-2 gap-8 rounded-lg">
                     <Button variant="outlined" onClick={() => NavigateTo.Categories(navigate)}>Cancel</Button>
                     {state.mode === "C" && <Button variant="contained" className="" onClick={() => create()}>Create</Button>}
-                    {state.mode === "E" && <Button variant="contained" className="" onClick={() => create()}>Update</Button>}
-                    {state.mode === "D" && <Button variant="contained" className="" onClick={() => {}}>Delete</Button>}
+                    {state.mode === "E" && <Button variant="contained" className="" onClick={() => updateC()}>Update</Button>}
+                    {state.mode === "D" && <Button variant="contained" className="" onClick={() => deleteC()}>Delete</Button>}
                     {state.mode === "V" && <Button variant="contained" className="" onClick={() => NavigateTo.Categories(navigate)}>Ok</Button>}
                 </section>
             </Card>

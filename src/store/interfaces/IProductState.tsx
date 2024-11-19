@@ -1,10 +1,11 @@
-import { IProduct, IProductVariant } from "../../models/IProduct";
+import { IProduct } from "../../models/IProduct";
+import { IVariant } from "../../models/IVariant";
 
 export interface IProductState {
     mode: string;
     product: IProduct;
 
     variantMode: string;
-    productVariant: IProductVariant | null;
+    updateVariant: IVariant | null;
     variantId: number | null;
 }

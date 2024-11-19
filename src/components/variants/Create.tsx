@@ -10,7 +10,7 @@ import OptionsList from "./options/List";
 import { OptionCreate } from "./options/Create";
 import { IState } from "../../store/interfaces/IState";
 import { VariantStateActions } from "../../store/Variant";
-import { getVariant } from "../../services/api";
+import { createVariant, deleteVariant, getVariant, updateVariant } from "../../services/api";
 import { getMode } from "../../helpers/CommonFunctions";
 
 export const VariantCreate = () => {
@@ -26,7 +26,6 @@ export const VariantCreate = () => {
     const [isPublished, setIsPublished] = useState(state.variant?.isPublished || false);
     const [show, setShow] = useState(false);
     var params = useParams();
-
     
 
     useEffect(() => {
@@ -50,8 +49,18 @@ export const VariantCreate = () => {
     }, [name, isPublished, state.variant])
 
     const create = () => {
-        
-        // NavigateTo.VariantsCreate(navigate);
+        createVariant(state.variant)
+        .then(() => NavigateTo.Variants(navigate));
+    }
+
+    const updateV = () => {
+        updateVariant(state.variant.id || 0, state.variant)
+        .then(() => NavigateTo.Variants(navigate));
+    }
+
+    const deleteV = () => {
+        deleteVariant(state.variant.id || 0)
+        .then(() => NavigateTo.Variants(navigate));
     }
 
     const createOption = () => {
@@ -74,7 +83,7 @@ export const VariantCreate = () => {
             {/* Options */}
             <section className={clsContainer}>
                 <section className={clsHeader}>
-                    <h6> Options </h6>
+                    <h6> Options </h6> {state.mode}
                     {(state.mode === "E" || state.mode === "C" ) && <Button className="text-gray-100 font-bold tracking-wider" variant="contained" onClick={() => {createOption()}}>
                     <span className="text-gray-100 font-bold tracking-wider">Add Options</span>
                     </Button>}
@@ -85,8 +94,8 @@ export const VariantCreate = () => {
                 <section className="grid grid-cols-2 gap-8 rounded-lg">
                     <Button variant="outlined" onClick={() => NavigateTo.Variants(navigate)}>Cancel</Button>
                     {state.mode === "C" && <Button variant="contained" className="" onClick={() => create()}>Create</Button>}
-                    {state.mode === "E" && <Button variant="contained" className="" onClick={() => create()}>Update</Button>}
-                    {state.mode === "D" && <Button variant="contained" className="" onClick={() => {}}>Delete</Button>}
+                    {state.mode === "E" && <Button variant="contained" className="" onClick={() => updateV()}>Update</Button>}
+                    {state.mode === "D" && <Button variant="contained" className="" onClick={() => deleteV()}>Delete</Button>}
                     {state.mode === "V" && <Button variant="contained" className="" onClick={() => NavigateTo.Variants(navigate)}>Ok</Button>}
                 </section>
             </Card>

@@ -21,7 +21,7 @@ export const SubCategoryCreate = () => {
 
     useEffect(() => {
         setName(state.subCategory.name);
-        setIsPublished(state.category.isPublished);
+        setIsPublished(state.subCategory.isPublished);
         setShow(true);
     }, []);
 
@@ -37,7 +37,7 @@ export const SubCategoryCreate = () => {
   }
 
   const addSubCategory = () => {
-      dispatch(CategoryStateActions.addSubCategory({id: - (state.category.subCategories?.length || 0) + 1, name, isPublished}));
+      dispatch(CategoryStateActions.addSubCategory({name, isPublished}));
       close();
   }
 
@@ -50,7 +50,7 @@ const deleteMiniCategory = (miniCategory: ICategory) => {
 }
 
 const addMiniCategory = () => {
-    dispatch(CategoryStateActions.addMiniCategory({id: - (state.subCategory.subCategories?.length || 0) + 1, name: miniCategoryName || "", isPublished: true}));
+    dispatch(CategoryStateActions.addMiniCategory({name: miniCategoryName || "", isPublished: true}));
     setMiniCategoryName("");
 }
 

@@ -53,12 +53,12 @@ const OptionsList = () => {
                           {GetIcon("visibility", "--btn-icon-color-view")}
                         </IconButton>
                     </span>
-                    {state.mode === "E" && <span className="bg-btn-icon-color-dull rounded" onClick={() => setOptionMode("E", option)}>
+                    { ["E", "C"].includes(state.mode) && <span className="bg-btn-icon-color-dull rounded" onClick={() => setOptionMode("E", option)}>
                         <IconButton aria-label="Example">
                             {GetIcon("edit", "--btn-icon-color-edit")}
                         </IconButton>
                     </span> }
-                    {state.mode === "E"  && <span className="bg-btn-icon-color-dull rounded" onClick={() =>setOptionMode("D", option)}>
+                    {["E", "C"].includes(state.mode)  && <span className="bg-btn-icon-color-dull rounded" onClick={() =>setOptionMode("D", option)}>
                         <IconButton aria-label="Example">
                           {GetIcon("delete", "--btn-icon-color-delete")}
                         </IconButton>

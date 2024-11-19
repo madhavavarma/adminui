@@ -2,8 +2,8 @@ import { Route, HashRouter as Router, Routes } from "react-router-dom";
 import Layout from "./basecomponents/Layout";
 import { Dashboard } from "./components/dashboard/Dashboard";
 import { FluidContainer } from "./basecomponents/FluidContainer";
-import { ProductCreate } from "./components/products/Create";
-import { ProductList } from "./components/products/List";
+import { Product } from "./components/products/Product";
+import { Products } from "./components/products/Products";
 import { CategoryList } from "./components/categories/List";
 import { CategoryCreate } from "./components/categories/Create";
 import { TagsList } from "./components/tags/List";
@@ -24,18 +24,15 @@ export default function Routing() {
                     <Route path="/dashboard" element={ <FluidContainer><Dashboard /></FluidContainer>}></Route>
                    
                     {/* Products */}
-                    <Route path="/products/create" element={ <FluidContainer><ProductCreate /></FluidContainer>}></Route>
-                    <Route path="/products/:mode/:id" element={ <FluidContainer><ProductCreate /></FluidContainer>}></Route>
-                    <Route path="/products/list" element={ <FluidContainer><ProductList /></FluidContainer>}></Route>
+                    <Route path="/products/:mode/:id?" element={ <FluidContainer><Product /></FluidContainer>}></Route>
+                    <Route path="/products/list" element={ <FluidContainer><Products /></FluidContainer>}></Route>
 
                     {/* Categoreis */}
-                    <Route path="/categories/create" element={ <FluidContainer><CategoryCreate /></FluidContainer>}></Route>
-                    <Route path="/categories/:mode/:id" element={ <FluidContainer><CategoryCreate /></FluidContainer>}></Route>
+                    <Route path="/categories/:mode/:id?" element={ <FluidContainer><CategoryCreate /></FluidContainer>}></Route>
                     <Route path="/categories/list" element={ <FluidContainer><CategoryList /></FluidContainer>}></Route>
 
                     {/* Variants */}
-                    <Route path="/variants/create" element={ <FluidContainer><VariantCreate /></FluidContainer>}></Route>
-                    <Route path="/variants/:mode/:id" element={ <FluidContainer><VariantCreate /></FluidContainer>}></Route>
+                    <Route path="/variants/:mode/:id?" element={ <FluidContainer><VariantCreate /></FluidContainer>}></Route>
                     <Route path="/variants/list" element={ <FluidContainer><VariantList /></FluidContainer>}></Route>
 
                     {/* Tags */}

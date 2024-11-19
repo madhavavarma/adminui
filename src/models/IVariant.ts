@@ -1,8 +1,9 @@
 import { IOption } from "./IOption";
 
 export interface IVariant {
-    id: number,
+    id?: number,
     name: string,   
     isPublished: boolean,
-    options: IOption[]   
+    options: IOption[],
+    productvarintoptions: IOption[]   
 }

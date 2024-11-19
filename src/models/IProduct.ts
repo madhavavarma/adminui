@@ -1,7 +1,5 @@
-import { ITag } from "./ITag";
-
 export interface IProduct {
-    id: number,
+    id?: number,
     name: string,
     image: string,
     description: string,
@@ -13,15 +11,17 @@ export interface IProduct {
     tax: number, 
 
     productVariants: IProductVariant[],
-    productCategories: IProductCategories[],
-    productTags: ITag[]
+    productCategories?: number[],
+    productSubCategories?: number[],
+    productMiniCategories?: number[],
+    productTags: number[]
 }
 
 export interface IProductVariant {
-    productId: number,
+    productId?: number,
     variantId: number,
     isPublished: boolean,
-    options: IProductVariantOption[]
+    productvariantoptions: IProductVariantOption[]
 }
 
 export interface IProductVariantOption {
@@ -30,15 +30,6 @@ export interface IProductVariantOption {
     isPublished: boolean
 }
 
-export interface IProductCategories {
-    productId: number,
-    categoryId: number,
-    subCategoryId: number,
-    miniCategoryId: number
-}
 
-export interface IProductTag {
-    productId: number;
-    tagId: number;
-}
+
 
